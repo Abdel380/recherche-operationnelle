@@ -1,5 +1,6 @@
 from collections import deque
 import pandas as pd
+from networkx.algorithms.distance_measures import eccentricity
 
 
 def lire_matrice_capacite(fichier):
@@ -9,7 +10,7 @@ def lire_matrice_capacite(fichier):
     """
     with open(fichier, 'r') as f:
         lignes = f.readlines()
-    n = int(lignes[0].strip())
+    n = int(lignes[0].strip()) # nombre de sommets
     matrice = [list(map(int, ligne.strip().split())) for ligne in lignes[1:n+1]]
     return n, matrice
 
@@ -90,6 +91,7 @@ def matrice_residuelle(capacites, flots):
     return [[capacites[u][v] - flots[u][v] for v in range(n)] for u in range(n)]
 
 
+
 def afficher_chaine(chemin, n):
     etiquettes = generer_etiquettes(n)
     return " → ".join(etiquettes[u] for u, _ in chemin) + f" → {etiquettes[chemin[-1][1]]}"
@@ -134,3 +136,110 @@ def edmonds_karp(n, capacites):
 def resoudre_probleme(fichier_txt):
     n, capacites = lire_matrice_capacite(fichier_txt)
     return edmonds_karp(n, capacites)
+
+
+
+
+
+def initialisation_hauteur_et_excedent(n):
+    hauteurs = {}
+    excedents = {}
+    for i in range(n-2):
+        hauteurs[chr(ord('a') + i )] = 0
+        excedents[chr(ord('a') + i)] = 0
+    hauteurs['s'] = n
+    excedents['s'] = 0
+    hauteurs['t'] = 0
+    excedents['t'] = 0
+
+
+    return hauteurs, excedents
+
+def initialiser_flots_excedents_source(n,capacites):
+    hauteurs, excedents = initialisation_hauteur_et_excedent(n)
+    print()
+    flots = [[0] * n for _ in range(n)]
+    for i in range(n):
+        if ( capacites[0][i] != 0):
+            flots[0][i] = capacites[0][i]
+            excedents[chr(ord("a")+i-1)] = capacites[0][i]
+            excedents['s'] = excedents['s'] - capacites[0][i]
+
+    return flots, hauteurs, excedents
+
+
+def pousser(u,v,excedents,hauteurs, capacites,flots):
+    cf = capacites[u][v] - flots[u][v] # capacité residuelle
+    if excedents[chr(ord("a")+u)]>=0 and  cf > 0 and hauteurs[chr(ord("a")+u)] - hauteurs[chr(ord("a")+v)] >= 1:
+        quantite_poussee = min(excedents[chr(ord("a")+u)], cf )
+        flots[u][v] += quantite_poussee
+        excedents[chr(ord("a")+u)] -= quantite_poussee
+        excedents[chr(ord("a")+v)] += quantite_poussee
+
+
+def reetiqueter(u, excedents, hauteurs, capacites, flots):
+    """
+    Réétiquette un sommet u selon l'algorithme de pousser-réétiqueter.
+
+    :param u: indice du sommet à réétiqueter
+    :param excedents: dictionnaire des excédents de chaque sommet
+    :param hauteurs: dictionnaire des hauteurs de chaque sommet
+    :param capacites: matrice des capacités
+    :param flots: matrice des flots
+    """
+    n = len(capacites)
+    etiquettes = generer_etiquettes(n)
+    etiquette_u = etiquettes[u]
+
+    # Vérifier si le sommet a un excédent positif
+    if excedents[etiquette_u] <= 0:
+        return
+
+    # Vérifier si pour tous les voisins v dans le graphe résiduel, h[u] < h[v] + 1
+    # Si c'est le cas, on doit réétiqueter
+    besoin_reetiquetage = True
+    min_hauteur_voisin = float('inf')
+
+    for v in range(n):
+        if v != u:
+            # Vérifier si (u,v) est dans Ef (graphe résiduel)
+            cf = capacites[u][v] - flots[u][v]
+            if cf > 0:  # Arc (u,v) dans le graphe résiduel
+                if hauteurs[etiquette_u] >= hauteurs[etiquettes[v]] + 1:
+                    besoin_reetiquetage = False
+                    break
+                min_hauteur_voisin = min(min_hauteur_voisin, hauteurs[etiquettes[v]])
+
+    # Réétiqueter si nécessaire
+    if besoin_reetiquetage:
+        hauteurs[etiquette_u] = 1 + min_hauteur_voisin
+
+
+def pousser_reetiqueter(n,arretes,capacites,source,puit):
+    flots, hauteurs, excedents = initialiser_flots_excedents_source(n,capacites)
+
+    pass
+
+
+def voisins_par_sommet_complet(matrice_capacite):
+    n = len(matrice_capacite)
+    etiquettes = generer_etiquettes(n)
+
+    voisins = {}
+    for i in range(n):
+        etiquette_i = etiquettes[i]
+        voisins[etiquette_i] = {
+            "successeurs": [],
+            "predecesseurs": []
+        }
+
+    for i in range(n):
+        for j in range(n):
+            if matrice_capacite[i][j] > 0:
+                # i → j : i a j comme successeur, j a i comme prédécesseur
+                etiquette_i = etiquettes[i]
+                etiquette_j = etiquettes[j]
+                voisins[etiquette_i]["successeurs"].append(etiquette_j)
+                voisins[etiquette_j]["predecesseurs"].append(etiquette_i)
+
+    return voisins
