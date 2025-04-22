@@ -144,9 +144,10 @@ def resoudre_probleme(fichier_txt):
 def initialisation_hauteur_et_excedent(n):
     hauteurs = {}
     excedents = {}
+    etiquettes = generer_etiquettes(n)
     for i in range(n-2):
-        hauteurs[chr(ord('a') + i )] = 0
-        excedents[chr(ord('a') + i)] = 0
+        hauteurs[etiquettes[i])] = 0
+        excedents[etiquettes[i]] = 0
     hauteurs['s'] = n
     excedents['s'] = 0
     hauteurs['t'] = 0
@@ -157,25 +158,37 @@ def initialisation_hauteur_et_excedent(n):
 
 def initialiser_flots_excedents_source(n,capacites):
     hauteurs, excedents = initialisation_hauteur_et_excedent(n)
+    etiquettes = generer_etiquettes(n)
     print()
     flots = [[0] * n for _ in range(n)]
     for i in range(n):
         if ( capacites[0][i] != 0):
             flots[0][i] = capacites[0][i]
-            excedents[chr(ord("a")+i-1)] = capacites[0][i]
+            excedents[etiquettes[i]] = capacites[0][i]
             excedents['s'] = excedents['s'] - capacites[0][i]
 
     return flots, hauteurs, excedents
 
 
-def pousser(u,v,excedents,hauteurs, capacites,flots):
-    cf = capacites[u][v] - flots[u][v] # capacité residuelle
-    if excedents[chr(ord("a")+u)]>=0 and  cf > 0 and hauteurs[chr(ord("a")+u)] - hauteurs[chr(ord("a")+v)] >= 1:
-        quantite_poussee = min(excedents[chr(ord("a")+u)], cf )
-        flots[u][v] += quantite_poussee
-        excedents[chr(ord("a")+u)] -= quantite_poussee
-        excedents[chr(ord("a")+v)] += quantite_poussee
+def pousser(u, v, excedents, hauteurs, capacites, flots):
+    etiquette_u = generer_etiquettes(len(capacites))[u]
+    etiquette_v = generer_etiquettes(len(capacites))[v]
+    cf = capacites[u][v] - flots[u][v]  # capacité résiduelle
+    print(cf)
 
+    print("POUSSER")
+    print(capacites[u][v])
+    print(f"Hauteur de {etiquette_u} = {hauteurs[etiquette_u]}")
+    print(f"Excédent de {etiquette_u} = {excedents[etiquette_u]}")
+
+    if excedents[etiquette_u] >= 0 and cf >= 0 and hauteurs[etiquette_u] > hauteurs[etiquette_v]:
+        quantite_poussee = min(excedents[etiquette_u], cf)
+        print("quantite poussée = ",quantite_poussee)
+        flots[u][v] += quantite_poussee
+        excedents[etiquette_u] -= quantite_poussee
+        print("nouvel excedent de ",etiquette_u," = ",excedents[etiquette_u])
+        excedents[etiquette_v] += quantite_poussee
+        print("nouvel excedent de ",etiquette_v," = ",excedents[etiquette_v])
 
 def reetiqueter(u, excedents, hauteurs, capacites, flots):
     """
@@ -215,10 +228,11 @@ def reetiqueter(u, excedents, hauteurs, capacites, flots):
         hauteurs[etiquette_u] = 1 + min_hauteur_voisin
 
 
-def pousser_reetiqueter(n,arretes,capacites,source,puit):
-    flots, hauteurs, excedents = initialiser_flots_excedents_source(n,capacites)
-
+def pousser_reetiqueter(capacites, flots, hauteurs, exces, graphe, s, t):
     pass
+
+
+
 
 
 def voisins_par_sommet_complet(matrice_capacite):
