@@ -146,7 +146,7 @@ def initialisation_hauteur_et_excedent(n):
     excedents = {}
     etiquettes = generer_etiquettes(n)
     for i in range(n-2):
-        hauteurs[etiquettes[i])] = 0
+        hauteurs[etiquettes[i]] = 0
         excedents[etiquettes[i]] = 0
     hauteurs['s'] = n
     excedents['s'] = 0
