@@ -37,7 +37,7 @@ def afficher_matrice(matrice, titre="Matrice"):
     """
     etiquettes = generer_etiquettes(len(matrice))
     df = pd.DataFrame(matrice, columns=etiquettes, index=etiquettes)
-    print(f"\n{titre} :\n{df}\n")
+    print(f"{titre} :\n{df}\n")
     return df
 
 
@@ -243,3 +243,9 @@ def voisins_par_sommet_complet(matrice_capacite):
                 voisins[etiquette_j]["predecesseurs"].append(etiquette_i)
 
     return voisins
+
+
+
+
+
+
