@@ -145,7 +145,7 @@ def initialisation_hauteur_et_excedent(n):
     hauteurs = {}
     excedents = {}
     etiquettes = generer_etiquettes(n)
-    for i in range(n-2):
+    for i in range(n-1):
         hauteurs[etiquettes[i]] = 0
         excedents[etiquettes[i]] = 0
     hauteurs['s'] = n
@@ -175,13 +175,13 @@ def pousser(u, v, excedents, hauteurs, capacites, flots):
     etiquette_v = generer_etiquettes(len(capacites))[v]
     cf = capacites[u][v] - flots[u][v]  # capacité résiduelle
     print(cf)
-
+    pushed = False
     print("POUSSER")
     print(capacites[u][v])
     print(f"Hauteur de {etiquette_u} = {hauteurs[etiquette_u]}")
     print(f"Excédent de {etiquette_u} = {excedents[etiquette_u]}")
 
-    if excedents[etiquette_u] >= 0 and cf >= 0 and hauteurs[etiquette_u] > hauteurs[etiquette_v]:
+    if excedents[etiquette_u] >= 0 and cf >= 0 and hauteurs[etiquette_u] == hauteurs[etiquette_v]+1:
         quantite_poussee = min(excedents[etiquette_u], cf)
         print("quantite poussée = ",quantite_poussee)
         flots[u][v] += quantite_poussee
@@ -189,6 +189,8 @@ def pousser(u, v, excedents, hauteurs, capacites, flots):
         print("nouvel excedent de ",etiquette_u," = ",excedents[etiquette_u])
         excedents[etiquette_v] += quantite_poussee
         print("nouvel excedent de ",etiquette_v," = ",excedents[etiquette_v])
+        pushed = True
+    return pushed
 
 def reetiqueter(u, excedents, hauteurs, capacites, flots):
     """
@@ -228,33 +230,86 @@ def reetiqueter(u, excedents, hauteurs, capacites, flots):
         hauteurs[etiquette_u] = 1 + min_hauteur_voisin
 
 
-def pousser_reetiqueter(capacites, flots, hauteurs, exces, graphe, s, t):
-    pass
+def sommet_actif(hauteurs,etiquettes,excedents):
+    hauteurs = dict(list(hauteurs.items())[1:-1])
+    excedents = dict(list(excedents.items())[1:-1])
+    etiquettes = etiquettes[1:-1]
+
+    sommets =[(hauteurs[etiquettes[i]],etiquettes[i],i+1) for i in range(len(etiquettes)) if excedents[etiquettes[i]]>0]
+
+    if not sommets:
+        return None
+    sommets.sort(key=lambda sommet: (-sommet[0],sommet[1]))
+
+    return sommets[0]
 
 
-
-
-
-def voisins_par_sommet_complet(matrice_capacite):
-    n = len(matrice_capacite)
+def pousser_reetiqueter(capacites,n):
+    flots,hauteurs,excedents = initialiser_flots_excedents_source(n,capacites)
     etiquettes = generer_etiquettes(n)
+
+    print(hauteurs)
+    while True:
+        u = sommet_actif(hauteurs,etiquettes,excedents)
+        # Indice et étiquette du sommet actif
+        indice_u, etiquette_u = u[2], u[1]
+
+        if u is None:
+            break
+
+        pushed = False
+        voisins_u = voisins_par_sommet(capacites,etiquettes)[u[1]]
+        print("u",u)
+        print("voisins de u",voisins_u)
+        print("hauteurs",hauteurs)
+        print("pousser",pushed)
+
+
+        for v in voisins_u:
+            cf = capacites[indice_u][v] - flots[indice_u][v]
+            print("cf",cf)
+            if cf>0 and n-1 in voisins_u and v==n-1:
+                    temp = voisins_u[v.index()]
+                    voisins_u[v.index()] = voisins_u[0]
+                    voisins_u[0] = temp
+            else:
+                voisins_u.sort()
+
+            if cf > 0 and hauteurs[etiquette_u] == hauteurs[chr(97+v)] + 1 and (v!=0 or v!=n-1):
+                pousser(indice_u,v, excedents, hauteurs, capacites, flots)
+                pushed = True
+                break
+
+            elif cf > 0 and hauteurs[etiquette_u] == hauteurs['s'] + 1:
+                pousser(indice_u,v, excedents, hauteurs, capacites, flots)
+                pushed = True
+                break
+
+            elif cf > 0 and hauteurs[etiquette_u] == hauteurs['t'] + 1:
+                pousser(indice_u,v, excedents, hauteurs, capacites, flots)
+                pushed = True
+                break
+            if not pushed:
+                reetiqueter(indice_u, excedents, hauteurs, capacites, flots)
+
+    return excedents['t']
+
+
+def voisins_par_sommet(matrice_capacite,etiquettes):
+    n = len(matrice_capacite)
 
     voisins = {}
     for i in range(n):
-        etiquette_i = etiquettes[i]
-        voisins[etiquette_i] = {
-            "successeurs": [],
-            "predecesseurs": []
-        }
+        voisins[etiquettes[i]] = []
 
     for i in range(n):
         for j in range(n):
             if matrice_capacite[i][j] > 0:
                 # i → j : i a j comme successeur, j a i comme prédécesseur
-                etiquette_i = etiquettes[i]
-                etiquette_j = etiquettes[j]
-                voisins[etiquette_i]["successeurs"].append(etiquette_j)
-                voisins[etiquette_j]["predecesseurs"].append(etiquette_i)
+                voisins[etiquettes[i]].append(j)
+                voisins[etiquettes[j]].append(i)
+                voisins[etiquettes[j]].sort()
+
 
     return voisins
 
