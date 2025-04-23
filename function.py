@@ -173,61 +173,92 @@ def initialiser_flots_excedents_source(n,capacites):
 def pousser(u, v, excedents, hauteurs, capacites, flots):
     etiquette_u = generer_etiquettes(len(capacites))[u]
     etiquette_v = generer_etiquettes(len(capacites))[v]
-    cf = capacites[u][v] - flots[u][v]  # capacité résiduelle
-    print(cf)
-    pushed = False
-    print("POUSSER")
-    print(capacites[u][v])
-    print(f"Hauteur de {etiquette_u} = {hauteurs[etiquette_u]}")
-    print(f"Excédent de {etiquette_u} = {excedents[etiquette_u]}")
+    # Calcul des capacités résiduelles via matrice résiduelle
+    residuels = matrice_residuelle(capacites, flots)
 
-    if excedents[etiquette_u] >= 0 and cf >= 0 and hauteurs[etiquette_u] == hauteurs[etiquette_v]+1:
-        quantite_poussee = min(excedents[etiquette_u], cf)
-        print("quantite poussée = ",quantite_poussee)
-        flots[u][v] += quantite_poussee
-        excedents[etiquette_u] -= quantite_poussee
-        print("nouvel excedent de ",etiquette_u," = ",excedents[etiquette_u])
-        excedents[etiquette_v] += quantite_poussee
-        print("nouvel excedent de ",etiquette_v," = ",excedents[etiquette_v])
+    cf_direct = residuels[u][v] # Capacité directe résiduelle
+    cf_inverse = flots[v][u] # Capacité inverse = flot existant inverse
+
+    pushed = False
+
+    # Vérification de la condition de poussée pour les arcs directs
+    if cf_direct > 0 and hauteurs[etiquette_u] == hauteurs[etiquette_v] + 1: #cf >0 on verifie que l'arc u-> existe
+        quantite = min(excedents[etiquette_u], cf_direct)
+        flots[u][v] += quantite
+        excedents[etiquette_u] -= quantite
+        excedents[etiquette_v] += quantite
         pushed = True
+
+    # Vérification de la condition de poussée pour les arcs inverses
+    elif cf_inverse > 0 and hauteurs[etiquette_u] == hauteurs[etiquette_v] + 1:
+        quantite = min(excedents[etiquette_u], cf_inverse)
+        flots[v][u] -= quantite
+        excedents[etiquette_u] -= quantite
+        excedents[etiquette_v] += quantite
+        pushed = True
+
     return pushed
 
-def reetiqueter(u, excedents, hauteurs, capacites, flots):
-    """
-    Réétiquette un sommet u selon l'algorithme de pousser-réétiqueter.
 
-    :param u: indice du sommet à réétiqueter
-    :param excedents: dictionnaire des excédents de chaque sommet
-    :param hauteurs: dictionnaire des hauteurs de chaque sommet
-    :param capacites: matrice des capacités
-    :param flots: matrice des flots
-    """
-    n = len(capacites)
+def pousser_reetiqueter(capacites, n):
+    flots, hauteurs, excedents = initialiser_flots_excedents_source(n, capacites)
     etiquettes = generer_etiquettes(n)
-    etiquette_u = etiquettes[u]
+    afficher_matrice(capacites)
 
-    # Vérifier si le sommet a un excédent positif
-    if excedents[etiquette_u] <= 0:
-        return
+    afficher_matrice(flots)
 
-    # Vérifier si pour tous les voisins v dans le graphe résiduel, h[u] < h[v] + 1
-    # Si c'est le cas, on doit réétiqueter
-    besoin_reetiquetage = True
-    min_hauteur_voisin = float('inf')
+    while True:
+        u = sommet_actif(hauteurs, etiquettes, excedents) # Sélection du sommet actif
+        if u is None:
+            break
 
-    for v in range(n):
-        if v != u:
-            # Vérifier si (u,v) est dans Ef (graphe résiduel)
-            cf = capacites[u][v] - flots[u][v]
-            if cf > 0:  # Arc (u,v) dans le graphe résiduel
-                if hauteurs[etiquette_u] >= hauteurs[etiquettes[v]] + 1:
-                    besoin_reetiquetage = False
-                    break
-                min_hauteur_voisin = min(min_hauteur_voisin, hauteurs[etiquettes[v]])
+        indice_u, etiquette_u = u[2], u[1]
+        pushed = False
 
-    # Réétiqueter si nécessaire
-    if besoin_reetiquetage:
-        hauteurs[etiquette_u] = 1 + min_hauteur_voisin
+        # Parcourir tous les voisins possibles (directs et inverses)
+        for v in range(n):
+            if pousser(indice_u, v, excedents, hauteurs, capacites, flots):
+                pushed = True
+                break
+
+        if not pushed:
+            # Réétiqueter et réinitialiser la boucle
+            reetiqueter(indice_u, excedents, hauteurs, capacites, flots)
+
+
+    return excedents['t']
+
+
+"""def voisins_par_sommet(matrice_capacite, etiquettes):
+    n = len(matrice_capacite)
+    voisins = {etiquette: [] for etiquette in etiquettes}
+
+    for i in range(n):
+        for j in range(n):
+            # Ajouter les arcs directs
+            if matrice_capacite[i][j] > 0:
+                voisins[etiquettes[i]].append(j)
+            # Ajouter les arcs inverses s'ils ont un flot > 0
+            if matrice_capacite[j][i] > 0:
+                voisins[etiquettes[i]].append(j)
+
+    return voisins"""
+
+
+def reetiqueter(u, excedents, hauteurs, capacites, flots):
+    etiquette_u = generer_etiquettes(len(capacites))[u]
+    min_hauteur = float('inf')
+    residuels = matrice_residuelle(capacites, flots)
+
+    # Parcourir tous les sommets
+    for v in range(len(capacites)):
+        if v == u:
+            continue
+        # Vérifier les arcs dans le graphe résiduel
+        if residuels[u][v] > 0 or flots[v][u] > 0:
+            min_hauteur = min(min_hauteur, hauteurs[generer_etiquettes(len(capacites))[v]])
+
+    hauteurs[etiquette_u] = min_hauteur + 1
 
 
 def sommet_actif(hauteurs,etiquettes,excedents):
@@ -244,74 +275,7 @@ def sommet_actif(hauteurs,etiquettes,excedents):
     return sommets[0]
 
 
-def pousser_reetiqueter(capacites,n):
-    flots,hauteurs,excedents = initialiser_flots_excedents_source(n,capacites)
-    etiquettes = generer_etiquettes(n)
 
-    print(hauteurs)
-    while True:
-        u = sommet_actif(hauteurs,etiquettes,excedents)
-        # Indice et étiquette du sommet actif
-        indice_u, etiquette_u = u[2], u[1]
-
-        if u is None:
-            break
-
-        pushed = False
-        voisins_u = voisins_par_sommet(capacites,etiquettes)[u[1]]
-        print("u",u)
-        print("voisins de u",voisins_u)
-        print("hauteurs",hauteurs)
-        print("pousser",pushed)
-
-
-        for v in voisins_u:
-            cf = capacites[indice_u][v] - flots[indice_u][v]
-            print("cf",cf)
-            if cf>0 and n-1 in voisins_u and v==n-1:
-                    temp = voisins_u[v.index()]
-                    voisins_u[v.index()] = voisins_u[0]
-                    voisins_u[0] = temp
-            else:
-                voisins_u.sort()
-
-            if cf > 0 and hauteurs[etiquette_u] == hauteurs[chr(97+v)] + 1 and (v!=0 or v!=n-1):
-                pousser(indice_u,v, excedents, hauteurs, capacites, flots)
-                pushed = True
-                break
-
-            elif cf > 0 and hauteurs[etiquette_u] == hauteurs['s'] + 1:
-                pousser(indice_u,v, excedents, hauteurs, capacites, flots)
-                pushed = True
-                break
-
-            elif cf > 0 and hauteurs[etiquette_u] == hauteurs['t'] + 1:
-                pousser(indice_u,v, excedents, hauteurs, capacites, flots)
-                pushed = True
-                break
-            if not pushed:
-                reetiqueter(indice_u, excedents, hauteurs, capacites, flots)
-
-    return excedents['t']
-
-
-def voisins_par_sommet(matrice_capacite,etiquettes):
-    n = len(matrice_capacite)
-
-    voisins = {}
-    for i in range(n):
-        voisins[etiquettes[i]] = []
-
-    for i in range(n):
-        for j in range(n):
-            if matrice_capacite[i][j] > 0:
-                # i → j : i a j comme successeur, j a i comme prédécesseur
-                voisins[etiquettes[i]].append(j)
-                voisins[etiquettes[j]].append(i)
-                voisins[etiquettes[j]].sort()
-
-
-    return voisins
 
 
 
