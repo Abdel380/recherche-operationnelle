@@ -14,6 +14,25 @@ def lire_matrice_capacite(fichier):
     matrice = [list(map(int, ligne.strip().split())) for ligne in lignes[1:n+1]]
     return n, matrice
 
+def lire_matrice_capacite_et_cout(fichier):
+    """
+    :param fichier:
+    :return:
+        - n : nombre de sommets
+        - capacites : matrice de capacités
+        - couts : matrice de coûts
+    """
+    with open(fichier, 'r') as f:
+        lignes = f.readlines()
+
+    n = int(lignes[0].strip())  # nombre de sommets
+    lignes = lignes[1:]
+
+    capacites = [list(map(int, lignes[i].strip().split())) for i in range(n)]
+    couts = [list(map(int, lignes[i + n].strip().split())) for i in range(n)]
+
+    return n, capacites, couts
+
 
 def generer_etiquettes(n):
     """
@@ -275,55 +294,55 @@ def sommet_actif(hauteurs,etiquettes,excedents):
     return sommets[0]
 
 
-def cycles_de_poids_négatif(capacites,distances):
-    """
-        :param capacites:
-        :param distances:
-        Calcule s'il y a un cycle à poids négatifs  .
-        :return:
-        """
-    n = len(capacites)
-    # Vérification des cycles de poids négatif
+def cycles_de_poids_negatif(couts, distances):
+    n = len(couts)
     for u in range(n):
         for v in range(n):
-            if capacites[u][v] != 0:
-                if distances[u] + capacites[u][v] < distances[v]:
-                    return False
+            if couts[u][v] != 0 and distances[u] + couts[u][v] < distances[v]:
+                return False
     return True
 
+def bellman_ford_avec_predecesseurs(couts, source=0):
+    n = len(couts)
+    distances = [float('inf')] * n
+    predecesseurs = [None] * n
+    distances[source] = 0
 
-def afficher_cout_plus_court_chemin(distance):
-    """
-        :param distance:
-        Affiche le cout des plus courts chemins depuis le sommet source.
-        :return:
-        """
-    sommet = generer_etiquettes(len(distance))
-    for i in range(len(distance)):
-        print(f"Le cout du plus court chemin de la source s vers {sommet[i]} est de : {distance[i]}.")
-    return
-
-def bellman_ford(capacites, source = 0):
-    """
-        :param capacites:
-        :param source:
-        Calcule des plus courts chemins depuis un sommet source donné  (algorithme de Bellman-Ford).
-        :return:
-        """
-    n = len(capacites) # Nombre de sommets
-    distances = [float('inf')] * n # Tous les sommets sont de longueur infini à l'itération 0
-    distances[source] = 0 # la source est de distance 0 par rapport à elle-même
-
-    # Détente des arêtes |V| - 1 fois
-    for x in range(n - 1): # Parcours de n - 1 itération ( il reste n - 1 sommets)
+    for x in range(n - 1):
         for u in range(n):
             for v in range(n):
-                if capacites[u][v] != 0:
-                    if distances[u] + capacites[u][v] < distances[v]:
-                        distances[v] = distances[u] + capacites[u][v]
-    if (cycles_de_poids_négatif(capacites,distances)): # Détection s'il y a un cycle à poids négatifs
-        return distances
-    else:
+                if couts[u][v] != 0 and distances[u] + couts[u][v] < distances[v]:
+                    distances[v] = distances[u] + couts[u][v]
+                    predecesseurs[v] = u
+
+    if not cycles_de_poids_negatif(couts, distances):
         print("Le graphe contient un cycle de poids négatif")
-    return
+        return None, None
+
+    return distances, predecesseurs
+
+def reconstruire_chemin(predecesseurs, t):
+    chemin = []
+    courant = t
+    while courant is not None:
+        chemin.insert(0, courant)
+        courant = predecesseurs[courant]
+    return chemin
+
+def afficher_chemin_cout_et_capacite(chemin, couts, capacites):
+    etiquettes = generer_etiquettes(len(couts))
+    cout_total = 0
+    capacites_sur_chemin = []
+
+    print("Chemin le plus court (en coût) de s à t :")
+    for i in range(len(chemin) - 1):
+        u = chemin[i]
+        v = chemin[i + 1]
+        cout_total += couts[u][v]
+        capacites_sur_chemin.append(capacites[u][v])
+        print(f"{etiquettes[u]} -> {etiquettes[v]} (coût: {couts[u][v]}, capacité: {capacites[u][v]})")
+
+    min_capacite = min(capacites_sur_chemin)
+    print(f"Coût total du chemin : {cout_total}")
+    print(f"Flot maximal : {min_capacite}")
 

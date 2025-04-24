@@ -1,11 +1,5 @@
 from function import *
 
-n,capacites =lire_matrice_capacite("./Propositions/prop-1.txt")
-
-flots,hauteurs,excedents = initialiser_flots_excedents_source(n,capacites)
-etiquettes = generer_etiquettes(n)
-
-
-
-print(pousser_reetiqueter(capacites,n))
+# Lecture du fichier contenant capacités et coûts
+n, capacites, couts = lire_matrice_capacite_et_cout("./Propositions/prop-10.txt")
 
