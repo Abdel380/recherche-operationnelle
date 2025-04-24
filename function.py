@@ -275,10 +275,55 @@ def sommet_actif(hauteurs,etiquettes,excedents):
     return sommets[0]
 
 
+def cycles_de_poids_négatif(capacites,distances):
+    """
+        :param capacites:
+        :param distances:
+        Calcule s'il y a un cycle à poids négatifs  .
+        :return:
+        """
+    n = len(capacites)
+    # Vérification des cycles de poids négatif
+    for u in range(n):
+        for v in range(n):
+            if capacites[u][v] != 0:
+                if distances[u] + capacites[u][v] < distances[v]:
+                    return False
+    return True
 
 
+def afficher_cout_plus_court_chemin(distance):
+    """
+        :param distance:
+        Affiche le cout des plus courts chemins depuis le sommet source.
+        :return:
+        """
+    sommet = generer_etiquettes(len(distance))
+    for i in range(len(distance)):
+        print(f"Le cout du plus court chemin de la source s vers {sommet[i]} est de : {distance[i]}.")
+    return
 
+def bellman_ford(capacites, source = 0):
+    """
+        :param capacites:
+        :param source:
+        Calcule des plus courts chemins depuis un sommet source donné  (algorithme de Bellman-Ford).
+        :return:
+        """
+    n = len(capacites) # Nombre de sommets
+    distances = [float('inf')] * n # Tous les sommets sont de longueur infini à l'itération 0
+    distances[source] = 0 # la source est de distance 0 par rapport à elle-même
 
-
-
+    # Détente des arêtes |V| - 1 fois
+    for x in range(n - 1): # Parcours de n - 1 itération ( il reste n - 1 sommets)
+        for u in range(n):
+            for v in range(n):
+                if capacites[u][v] != 0:
+                    if distances[u] + capacites[u][v] < distances[v]:
+                        distances[v] = distances[u] + capacites[u][v]
+    if (cycles_de_poids_négatif(capacites,distances)): # Détection s'il y a un cycle à poids négatifs
+        return distances
+    else:
+        print("Le graphe contient un cycle de poids négatif")
+    return
 

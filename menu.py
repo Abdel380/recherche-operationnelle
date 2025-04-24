@@ -35,10 +35,24 @@ with open(fichier_to_write, "w") as logfile:
     # Extraction de la matrice
     n, capacites = lire_matrice_capacite(fichier)
 
+    print(capacites)
+
     # Affichage de la table des capacités
     print("\nNombre de sommets : " + str(n))
     afficher_matrice(capacites)
 
     print("Le graphe residuel initial est le graphe de depart.")
+
+
+    # Si problème de flot max :
+
+
+
+    # Si problème de flot min :
+    distance = bellman_ford(capacites)
+    afficher_cout_plus_court_chemin(distance)
+
+
+
 
     sys.stdout = sys.__stdout__
