@@ -315,11 +315,19 @@ def bellman_ford_avec_predecesseurs(couts, source=0):
                     distances[v] = distances[u] + couts[u][v]
                     predecesseurs[v] = u
 
-    if not cycles_de_poids_negatif(couts, distances):
-        print("Le graphe contient un cycle de poids négatif")
-        return None, None
 
     return distances, predecesseurs
+
+def maj_bellman(chemin, couts, capacites, min_capacite):
+    for x in range(len(chemin)-1):
+        capacites[chemin[x]][chemin[x+1]] -= min_capacite # OK
+        capacites[chemin[x+1]][chemin[x]] = min_capacite # OK
+        couts[chemin[x+1]][chemin[x]] = - couts[chemin[x]][chemin[x+1]]
+
+    couts[chemin[-2]][chemin[-1]] = 0
+    print(capacites)
+    print(couts)
+
 
 def reconstruire_chemin(predecesseurs, t):
     chemin = []
@@ -344,8 +352,12 @@ def afficher_chemin_cout_et_capacite(chemin, couts, capacites):
         print(f"{etiquettes[u]} -> {etiquettes[v]} (coût: {couts[u][v]}, capacité: {capacites[u][v]})")
 
     min_capacite = min(capacites_sur_chemin)
-    print(f"Coût total du chemin : {cout_total}")
+    print(f"Coût total du chemin : {cout_total * min_capacite}")
     print(f"Flot maximal : {min_capacite}")
+    maj_bellman(chemin, couts, capacites, min_capacite)
+
+
+
 
 
 
