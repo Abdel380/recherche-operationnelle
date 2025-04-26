@@ -327,6 +327,7 @@ def reconstruire_chemin(predecesseurs, t):
     while courant is not None:
         chemin.insert(0, courant)
         courant = predecesseurs[courant]
+    print(chemin)
     return chemin
 
 def afficher_chemin_cout_et_capacite(chemin, couts, capacites):
@@ -345,4 +346,6 @@ def afficher_chemin_cout_et_capacite(chemin, couts, capacites):
     min_capacite = min(capacites_sur_chemin)
     print(f"Coût total du chemin : {cout_total}")
     print(f"Flot maximal : {min_capacite}")
+
+
 
