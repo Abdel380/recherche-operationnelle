@@ -222,9 +222,7 @@ def pousser(u, v, excedents, hauteurs, capacites, flots):
 def pousser_reetiqueter(capacites, n):
     flots, hauteurs, excedents = initialiser_flots_excedents_source(n, capacites)
     etiquettes = generer_etiquettes(n)
-    afficher_matrice(capacites)
 
-    afficher_matrice(flots)
 
     while True:
         u = sommet_actif(hauteurs, etiquettes, excedents) # Sélection du sommet actif
@@ -244,24 +242,8 @@ def pousser_reetiqueter(capacites, n):
             # Réétiqueter et réinitialiser la boucle
             reetiqueter(indice_u, excedents, hauteurs, capacites, flots)
 
-
+    print(excedents['t'])
     return excedents['t']
-
-
-"""def voisins_par_sommet(matrice_capacite, etiquettes):
-    n = len(matrice_capacite)
-    voisins = {etiquette: [] for etiquette in etiquettes}
-
-    for i in range(n):
-        for j in range(n):
-            # Ajouter les arcs directs
-            if matrice_capacite[i][j] > 0:
-                voisins[etiquettes[i]].append(j)
-            # Ajouter les arcs inverses s'ils ont un flot > 0
-            if matrice_capacite[j][i] > 0:
-                voisins[etiquettes[i]].append(j)
-
-    return voisins"""
 
 
 def reetiqueter(u, excedents, hauteurs, capacites, flots):
