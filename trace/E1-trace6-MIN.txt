@@ -1,0 +1,29 @@
+
+Nombre de sommets : 6
+Matrice :
+   s  a  b  c  d  t
+s  0  4  2  4  0  0
+a  0  0  0  4  1  0
+b  0  0  0  0  2  0
+c  0  0  0  0  2  2
+d  0  0  0  0  0  2
+t  0  0  0  0  0  0
+
+Le graphe residuel initial est le graphe de depart.
+Veuillez choisir la valeur de flot que vous souhaitez envoyer 
+>> 
+Chemin le plus court (en cout) de s a t :
+s -> c (cout: 2, capacite: 2)
+c -> t (cout: 0, capacite: 0)
+Cout total du chemin : 0
+Flot maximal : 0
+
+Chemin le plus court (en cout) de s a t :
+s -> b (cout: 1, capacite: 0)
+b -> d (cout: 3, capacite: 0)
+d -> t (cout: 0, capacite: 0)
+Cout total du chemin : 0
+Flot maximal : 0
+
+>> Flot achemine : 4 / 100
+>> Cout total minimum : 26

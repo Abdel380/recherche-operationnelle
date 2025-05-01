@@ -1,0 +1,220 @@
+
+Nombre de sommets : 10
+Matrice :
+   s   a  b  c  d  e  f  g  h  t
+s  0  16  3  8  0  0  0  0  0  0
+a  0   0  3  0  3  3  4  0  0  0
+b  0   0  0  7  0  5  0  0  0  0
+c  0   0  0  0  0  0  0  0  7  0
+d  0   0  0  0  0  0  1  8  0  0
+e  0   0  0  0  8  0  0  0  0  0
+f  0   0  0  0  0  0  0  0  0  8
+g  0   0  0  0  0  0  3  0  4  6
+h  0   0  0  0  0  4  0  0  0  8
+t  0   0  0  0  0  0  0  0  0  0
+
+Le graphe residuel initial est le graphe de depart.
+
+Iteration 1 :
+Le parcours en largeur :
+a ; (a) = s
+b ; (b) = s
+c ; (c) = s
+d ; (d) = a
+e ; (e) = a
+f ; (f) = a
+g ; (g) = d
+h ; (h) = c
+t ; (t) = f
+
+Detection d une chaine ameliorante : s -> a -> f -> t de flot 4.
+Modifications sur le graphe residuel :
+   s   a  b  c  d  e  f  g  h  t
+s  0  12  3  8  0  0  0  0  0  0
+a  4   0  3  0  3  3  0  0  0  0
+b  0   0  0  7  0  5  0  0  0  0
+c  0   0  0  0  0  0  0  0  7  0
+d  0   0  0  0  0  0  1  8  0  0
+e  0   0  0  0  8  0  0  0  0  0
+f  0   4  0  0  0  0  0  0  0  4
+g  0   0  0  0  0  0  3  0  4  6
+h  0   0  0  0  0  4  0  0  0  8
+t  0   0  0  0  0  0  4  0  0  0
+
+
+Iteration 2 :
+Le parcours en largeur :
+a ; (a) = s
+b ; (b) = s
+c ; (c) = s
+d ; (d) = a
+e ; (e) = a
+f ; (f) = d
+g ; (g) = d
+h ; (h) = c
+t ; (t) = h
+
+Detection d une chaine ameliorante : s -> c -> h -> t de flot 7.
+Modifications sur le graphe residuel :
+   s   a  b  c  d  e  f  g  h  t
+s  0  12  3  1  0  0  0  0  0  0
+a  4   0  3  0  3  3  0  0  0  0
+b  0   0  0  7  0  5  0  0  0  0
+c  7   0  0  0  0  0  0  0  0  0
+d  0   0  0  0  0  0  1  8  0  0
+e  0   0  0  0  8  0  0  0  0  0
+f  0   4  0  0  0  0  0  0  0  4
+g  0   0  0  0  0  0  3  0  4  6
+h  0   0  0  7  0  4  0  0  0  1
+t  0   0  0  0  0  0  4  0  7  0
+
+
+Iteration 3 :
+Le parcours en largeur :
+a ; (a) = s
+b ; (b) = s
+c ; (c) = s
+d ; (d) = a
+e ; (e) = a
+f ; (f) = d
+g ; (g) = d
+t ; (t) = f
+
+Detection d une chaine ameliorante : s -> a -> d -> f -> t de flot 1.
+Modifications sur le graphe residuel :
+   s   a  b  c  d  e  f  g  h  t
+s  0  11  3  1  0  0  0  0  0  0
+a  5   0  3  0  2  3  0  0  0  0
+b  0   0  0  7  0  5  0  0  0  0
+c  7   0  0  0  0  0  0  0  0  0
+d  0   1  0  0  0  0  0  8  0  0
+e  0   0  0  0  8  0  0  0  0  0
+f  0   4  0  0  1  0  0  0  0  3
+g  0   0  0  0  0  0  3  0  4  6
+h  0   0  0  7  0  4  0  0  0  1
+t  0   0  0  0  0  0  5  0  7  0
+
+
+Iteration 4 :
+Le parcours en largeur :
+a ; (a) = s
+b ; (b) = s
+c ; (c) = s
+d ; (d) = a
+e ; (e) = a
+f ; (f) = g
+g ; (g) = d
+h ; (h) = g
+t ; (t) = g
+
+Detection d une chaine ameliorante : s -> a -> d -> g -> t de flot 2.
+Modifications sur le graphe residuel :
+   s  a  b  c  d  e  f  g  h  t
+s  0  9  3  1  0  0  0  0  0  0
+a  7  0  3  0  0  3  0  0  0  0
+b  0  0  0  7  0  5  0  0  0  0
+c  7  0  0  0  0  0  0  0  0  0
+d  0  3  0  0  0  0  0  6  0  0
+e  0  0  0  0  8  0  0  0  0  0
+f  0  4  0  0  1  0  0  0  0  3
+g  0  0  0  0  2  0  3  0  4  4
+h  0  0  0  7  0  4  0  0  0  1
+t  0  0  0  0  0  0  5  2  7  0
+
+
+Iteration 5 :
+Le parcours en largeur :
+a ; (a) = s
+b ; (b) = s
+c ; (c) = s
+d ; (d) = e
+e ; (e) = a
+f ; (f) = g
+g ; (g) = d
+h ; (h) = g
+t ; (t) = g
+
+Detection d une chaine ameliorante : s -> a -> e -> d -> g -> t de flot 3.
+Modifications sur le graphe residuel :
+    s  a  b  c  d  e  f  g  h  t
+s   0  6  3  1  0  0  0  0  0  0
+a  10  0  3  0  0  0  0  0  0  0
+b   0  0  0  7  0  5  0  0  0  0
+c   7  0  0  0  0  0  0  0  0  0
+d   0  3  0  0  0  3  0  3  0  0
+e   0  3  0  0  5  0  0  0  0  0
+f   0  4  0  0  1  0  0  0  0  3
+g   0  0  0  0  5  0  3  0  4  1
+h   0  0  0  7  0  4  0  0  0  1
+t   0  0  0  0  0  0  5  5  7  0
+
+
+Iteration 6 :
+Le parcours en largeur :
+a ; (a) = s
+b ; (b) = s
+c ; (c) = s
+d ; (d) = e
+e ; (e) = b
+f ; (f) = g
+g ; (g) = d
+h ; (h) = g
+t ; (t) = g
+
+Detection d une chaine ameliorante : s -> b -> e -> d -> g -> t de flot 1.
+Modifications sur le graphe residuel :
+    s  a  b  c  d  e  f  g  h  t
+s   0  6  2  1  0  0  0  0  0  0
+a  10  0  3  0  0  0  0  0  0  0
+b   1  0  0  7  0  4  0  0  0  0
+c   7  0  0  0  0  0  0  0  0  0
+d   0  3  0  0  0  4  0  2  0  0
+e   0  3  1  0  4  0  0  0  0  0
+f   0  4  0  0  1  0  0  0  0  3
+g   0  0  0  0  6  0  3  0  4  0
+h   0  0  0  7  0  4  0  0  0  1
+t   0  0  0  0  0  0  5  6  7  0
+
+
+Iteration 7 :
+Le parcours en largeur :
+a ; (a) = s
+b ; (b) = s
+c ; (c) = s
+d ; (d) = e
+e ; (e) = b
+f ; (f) = g
+g ; (g) = d
+h ; (h) = g
+t ; (t) = f
+
+Detection d une chaine ameliorante : s -> b -> e -> d -> g -> f -> t de flot 2.
+Modifications sur le graphe residuel :
+    s  a  b  c  d  e  f  g  h  t
+s   0  6  0  1  0  0  0  0  0  0
+a  10  0  3  0  0  0  0  0  0  0
+b   3  0  0  7  0  2  0  0  0  0
+c   7  0  0  0  0  0  0  0  0  0
+d   0  3  0  0  0  6  0  0  0  0
+e   0  3  3  0  2  0  0  0  0  0
+f   0  4  0  0  1  0  0  2  0  1
+g   0  0  0  0  8  0  1  0  4  0
+h   0  0  0  7  0  4  0  0  0  1
+t   0  0  0  0  0  0  7  6  7  0
+
+Matrice des flots (finale) :
+   s      a    b    c    d    e    f    g    h    t
+s  0  10/16  3/3  7/8    0    0    0    0    0    0
+a  0      0  0/3    0  3/3  3/3  4/4    0    0    0
+b  0      0    0  0/7    0  3/5    0    0    0    0
+c  0      0    0    0    0    0    0    0  7/7    0
+d  0      0    0    0    0    0  1/1  8/8    0    0
+e  0      0    0    0  6/8    0    0    0    0    0
+f  0      0    0    0    0    0    0    0    0  7/8
+g  0      0    0    0    0    0  2/3    0  0/4  6/6
+h  0      0    0    0    0  0/4    0    0    0  7/8
+t  0      0    0    0    0    0    0    0    0    0
+
+
+Valeur du flot max = 20
+

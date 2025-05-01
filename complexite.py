@@ -31,7 +31,7 @@ def temps_execution(n):
     temps_fin_PR = time.process_time() - temps_debut_PR
 
     temps_debut_FM = time.process_time()
-    pousser_reetiqueter(capacites, n)
+    flot_a_cout_minimal(capacites, couts)
     temps_fin_FM = time.process_time() - temps_debut_FM
 
 
@@ -76,7 +76,7 @@ def lancer_experience():
     print("start")
     nombre_sommet = [10,20,40,100,400,1000,4000,10000] # Les différents tests pour le nombre de sommets
 
-    for i in range(0,3):
+    for i in range(len(nombre_sommet)):
         name_file_FF = "experience/" + str(nombre_sommet[i]) + "/FF.txt" # Fichier txt avec les tests
         name_file_PR = "experience/" + str(nombre_sommet[i]) + "/PR.txt"
         name_file_MIN = "experience/" + str(nombre_sommet[i]) + "/MIN.txt"

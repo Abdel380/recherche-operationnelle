@@ -1,0 +1,16 @@
+
+Nombre de sommets : 6
+Matrice :
+   s   a   b   c   d   t
+s  0  15   8   0   0   0
+a  0   0  20   4  10   0
+b  0   0   0  15   4   0
+c  0   0   0   0  20   5
+d  0   0   5   0   0  15
+t  0   0   0   0   0   0
+
+Le graphe residuel initial est le graphe de depart.
+Veuillez choisir la valeur de flot que vous souhaitez envoyer 
+>> 
+>> Flot achemine : 0 / 100
+>> Cout total minimum : 0
