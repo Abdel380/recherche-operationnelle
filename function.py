@@ -287,7 +287,7 @@ def cycles_de_poids_negatif(couts, distances):
                 return False
     return True
 
-def bellman_ford_avec_predecesseurs(couts, source=0):
+def bellman_ford_avec_predecesseurs(couts,capacites, source=0):
     n = len(couts)
     distances = [float('inf')] * n
     predecesseurs = [None] * n
@@ -296,12 +296,12 @@ def bellman_ford_avec_predecesseurs(couts, source=0):
     for x in range(n - 1):
         for u in range(n):
             for v in range(n):
-                if couts[u][v] != 0 and distances[u] + couts[u][v] < distances[v]:
+                if capacites[u][v] != 0 and distances[u] + couts[u][v] < distances[v]:
                     distances[v] = distances[u] + couts[u][v]
                     predecesseurs[v] = u
-
-
+    print(distances, predecesseurs)
     return distances, predecesseurs
+
 
 def maj_bellman(chemin, couts, capacites, min_capacite):
     for x in range(len(chemin)-1):
@@ -354,7 +354,7 @@ def flot_a_cout_minimal(couts, capacites, flot_demande,source=0):
     cout_total = 0
 
     while flot_total < flot_demande:
-        distances, predecesseurs = bellman_ford_avec_predecesseurs(couts, source)
+        distances, predecesseurs = bellman_ford_avec_predecesseurs(couts,capacites, source)
         if distances[puit] == float('inf'):
             break  # Plus de chemin ameliorant
 
