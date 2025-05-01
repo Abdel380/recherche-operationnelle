@@ -65,11 +65,51 @@ def afficher_nuage_points(matrice,algorithme):
     plt.scatter(x,matrice)
     plt.title("Nuage de points pour l'algorithme:"+ algorithme)
     plt.xlabel("x")
-    plt.ylabel("temps d'éxécution")
+    plt.ylabel("Temps d'éxécution en seconde")
     plt.grid()
     plt.show()
 
 
 
 
+def lancer_experience():
+    print("start")
+    nombre_sommet = [10,20,40,100,400,1000,4000,10000] # Les différents tests pour le nombre de sommets
+
+    for i in range(0,3):
+        name_file_FF = "experience/" + str(nombre_sommet[i]) + "/FF.txt" # Fichier txt avec les tests
+        name_file_PR = "experience/" + str(nombre_sommet[i]) + "/PR.txt"
+        name_file_MIN = "experience/" + str(nombre_sommet[i]) + "/MIN.txt"
+
+        tab_FF = [] # Stockage des temps d'execution
+        tab_PR = []
+        tab_MIN = []
+
+        for iteration in range(100):
+            temps_fin_FF,temps_fin_PR,temps_fin_MIN = temps_execution(nombre_sommet[i]) # Les temps d'exécution pour un seul
+            tab_FF.append(temps_fin_FF)
+            tab_PR.append(temps_fin_PR)
+            tab_MIN.append(temps_fin_MIN)
+        with open(name_file_FF, 'w') as f:
+            for element in tab_FF:
+                f.write(str(element) + "\n")
+                f.close
+
+        with open(name_file_PR, 'w') as f:
+            for element in tab_PR:
+                f.write(str(element) + "\n")
+                f.close
+
+        with open(name_file_MIN, 'w') as f:
+            for element in tab_MIN:
+                f.write(str(element) + "\n")
+                f.close
+    return
+
+
+
+
+
+if __name__ == '__main__':
+    lancer_experience()
 
