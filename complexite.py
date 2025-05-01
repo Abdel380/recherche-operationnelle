@@ -31,7 +31,7 @@ def temps_execution(n):
     temps_fin_PR = time.process_time() - temps_debut_PR
 
     temps_debut_FM = time.process_time()
-    flot_a_cout_minimal(capacites, couts)
+    flot_a_cout_minimal(capacites, couts,100)
     temps_fin_FM = time.process_time() - temps_debut_FM
 
 
