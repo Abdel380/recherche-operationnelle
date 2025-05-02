@@ -334,8 +334,6 @@ def afficher_chemin_cout_et_capacite(chemin, couts, capacites):
         print(f"{etiquettes[u]} -> {etiquettes[v]} (cout: {couts[u][v]}, capacite: {capacites[u][v]})")
 
     min_capacite = min(capacites_sur_chemin)
-    print(f"Cout total du chemin : {cout_total * min_capacite}")
-    print(f"Flot maximal : {min_capacite}")
     maj_bellman(chemin, couts, capacites, min_capacite)
 
 
@@ -372,9 +370,10 @@ def flot_a_cout_minimal(couts, capacites, flot_demande,source=0):
         cout_total += distances[puit] * flux_envoye
 
         afficher_chemin_cout_et_capacite(chemin, couts, capacites)
+        print(f"\n>> Flot achemine : {flot_total} / {flot_demande}")
+        print(f">> Cout total minimum : {cout_total}")
 
-    print(f"\n>> Flot achemine : {flot_total} / {flot_demande}")
-    print(f">> Cout total minimum : {cout_total}")
+
     return flot_total, cout_total
 
 
