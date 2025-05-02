@@ -12,13 +12,15 @@ t  0    0    0    0    0    0    0
 
 Le graphe residuel initial est le graphe de depart.
 Veuillez choisir la valeur de flot que vous souhaitez envoyer 
->> 
+>> [0, 2, 3, 6, 3, 8, 6] [None, 0, 0, 1, 1, 2, 4]
+
 Chemin le plus court (en cout) de s a t :
 s -> a (cout: 2, capacite: 70)
 a -> d (cout: 1, capacite: 20)
 d -> t (cout: 0, capacite: 0)
 Cout total du chemin : 0
 Flot maximal : 0
+[0, 2, 3, 6, 3, 8, 9] [None, 0, 0, 1, 1, 2, 3]
 
 Chemin le plus court (en cout) de s a t :
 s -> a (cout: 2, capacite: 50)

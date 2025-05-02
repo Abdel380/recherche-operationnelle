@@ -11,31 +11,54 @@ t  0  0  0  0  0  0
 
 Le graphe residuel initial est le graphe de depart.
 Veuillez choisir la valeur de flot que vous souhaitez envoyer 
->> 
+>> [0, 4, 6, 2, 4, 6] [None, 0, 1, 0, 0, 4]
+
 Chemin le plus court (en cout) de s a t :
 s -> d (cout: 4, capacite: 4)
 d -> t (cout: 0, capacite: 0)
 Cout total du chemin : 0
 Flot maximal : 0
+[0, 4, 6, 2, 4, 7] [None, 0, 1, 0, 0, 1]
 
 Chemin le plus court (en cout) de s a t :
 s -> a (cout: 4, capacite: 0)
 a -> t (cout: 0, capacite: 2)
 Cout total du chemin : 0
 Flot maximal : 0
+[0, 6, 8, 2, 4, 6] [None, 3, 1, 0, 0, 1]
+
+Chemin le plus court (en cout) de s a t :
+s -> c (cout: 2, capacite: 6)
+c -> a (cout: 4, capacite: 1)
+a -> t (cout: 0, capacite: 0)
+Cout total du chemin : 0
+Flot maximal : 0
+[0, 6, 8, 2, 4, 8] [None, 3, 1, 0, 0, 3]
 
 Chemin le plus court (en cout) de s a t :
 s -> c (cout: 2, capacite: 0)
-c -> t (cout: 0, capacite: 1)
+c -> t (cout: 0, capacite: 3)
 Cout total du chemin : 0
 Flot maximal : 0
+[0, 10, 12, 6, 4, 6] [None, 3, 1, 4, 0, 3]
 
 Chemin le plus court (en cout) de s a t :
-s -> a (cout: 4, capacite: 0)
-a -> b (cout: 2, capacite: 1)
-b -> t (cout: 0, capacite: 1)
+s -> d (cout: 4, capacite: 1)
+d -> c (cout: 2, capacite: 1)
+c -> t (cout: 0, capacite: 0)
 Cout total du chemin : 0
 Flot maximal : 0
+[0, 10, 12, 6, 4, 15] [None, 3, 1, 4, 0, 2]
 
->> Flot achemine : 14 / 100
->> Cout total minimum : 105
+Chemin le plus court (en cout) de s a t :
+s -> d (cout: 4, capacite: 0)
+d -> c (cout: 2, capacite: 0)
+c -> a (cout: 4, capacite: 0)
+a -> b (cout: 2, capacite: 0)
+b -> t (cout: 0, capacite: 0)
+Cout total du chemin : 0
+Flot maximal : 0
+[0, inf, inf, inf, inf, inf] [None, None, None, None, None, None]
+
+>> Flot achemine : 18 / 25
+>> Cout total minimum : 134

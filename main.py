@@ -1,6 +1,6 @@
 from function import *
 from complexite import*
 
-n, capacites, couts = lire_matrice_capacite_et_cout("./Propositions/prop-11.txt")
+n, capacites = lire_matrice_capacite("./Propositions/prop-1.txt")
 
-flot_total, cout_total = flot_a_cout_minimal(couts, capacites, 4)
+print(pousser_reetiqueter(capacites,n))
