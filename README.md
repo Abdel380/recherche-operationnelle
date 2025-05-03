@@ -16,6 +16,9 @@ Ce projet de Recherche Opérationnelle permet de résoudre des problèmes de flo
 -  `menu.py`: Fichier contenant le menu et les appels des fonctions
 -  `fonction.py`: Fichier qui gère les opérations utiles à la résolution d'un problème de flots
 -  `complexite.py`: Fichier qui gère la recherche de compléxité dans nos algorithmes, les compare et trace le nuage de points
+-  `Propositions` : Dossier qui contient toutes les propositions de problèmes de flot à résoudre
+-  `trace` : Dossier qui contient toutes les traces effectuées sur les propositions de problèmes de flot pour les 3 algorithmes
+-  `temps_execution` : Dossier qui contient toutes les temps d'exécution des algorithmes sur des graphe généré aléatoirement de n sommet.
 
 ## Comment lancer le programmer
 

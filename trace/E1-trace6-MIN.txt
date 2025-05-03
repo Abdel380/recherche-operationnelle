@@ -12,7 +12,7 @@ t  0  0  0  0  0  0
 Le graphe residuel initial est le graphe de départ.
 Veuillez choisir la valeur de flot que vous souhaitez envoyer 
 >>  
-L'objectif est de trouver un flot de valeur 5, de coût minimal. 
+L'objectif est de trouver un flot de valeur 4, de coût minimal. 
 
 
 Algorithme de Bellman :
@@ -29,7 +29,7 @@ s -> b (cout: 1, capacite: 2)
 b -> c (cout: 1, capacite: 4)
 c -> t (cout: 1, capacite: 2)
 La premiere chaine ameliorante est donc s -> b -> c -> t de flot 2
-Le flot total est 2 < 5 donc on contiue.
+Le flot total est 2 < 4 donc on contiue.
 
 Le graphe residuel pondere associe a cette modification est :
 Matrice de capacite :
@@ -64,7 +64,7 @@ Chemin le plus court (en cout) de s vers t :
 s -> a (cout: 3, capacite: 4)
 a -> t (cout: 4, capacite: 1)
 La premiere chaine ameliorante est donc s -> a -> t de flot 1
-Le flot total est 3 < 5 donc on contiue.
+Le flot total est 3 < 4 donc on contiue.
 
 Le graphe residuel pondere associe a cette modification est :
 Matrice de capacite :
@@ -104,6 +104,7 @@ d -> t (cout: 6, capacite: 2)
 La premiere chaine ameliorante est donc s -> a -> c -> d -> t de flot 2
 
 
-Le flot total est 5 > 5 donc on peut arreter ici.
-Le cout pour lancer passer un flot de 5 est de : 41
-d(f) =  1 x 2 + 1 x 2 + 1 x 2 + 3 x 1 + 4 x 1 + 3 x 2 + 2 x 2 + 3 x 2 + 6 x 2  = 41
+Le flot total est 5 > 4 donc on peut arreter ici.
+La chaine ameliorante fait passer un flot de 2, mais on ne lancera passer que 1 
+Le cout pour lancer passer un flot de 4 est de : 27
+d(f) =  1 x 2 + 1 x 2 + 1 x 2 + 3 x 1 + 4 x 1 + 3 x 1 + 2 x 1 + 3 x 1 + 6 x 1  = 27
