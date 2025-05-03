@@ -1,0 +1,110 @@
+
+Nombre de sommets : 7
+Matrice :
+   s    a    b    c    d    e    t
+s  0  150  150    0    0    0    0
+a  0    0    0  120  100    0    0
+b  0    0    0    0  100  120    0
+c  0    0    0    0    0    0  150
+d  0    0    0   50    0    0   80
+e  0    0    0    0   50    0  150
+t  0    0    0    0    0    0    0
+
+Le graphe residuel initial est le graphe de départ.
+
+Iteration 1 :
+Le parcours en largeur :
+a ; Predecesseur(a) = s
+b ; Predecesseur(b) = s
+c ; Predecesseur(c) = a
+d ; Predecesseur(d) = a
+e ; Predecesseur(e) = b
+t ; Predecesseur(t) = c
+
+Detection d une chaine ameliorante : s -> a -> c -> t de flot 120.
+Modifications sur le graphe residuel :
+     s    a    b    c    d    e    t
+s    0   30  150    0    0    0    0
+a  120    0    0    0  100    0    0
+b    0    0    0    0  100  120    0
+c    0  120    0    0    0    0   30
+d    0    0    0   50    0    0   80
+e    0    0    0    0   50    0  150
+t    0    0    0  120    0    0    0
+
+
+Iteration 2 :
+Le parcours en largeur :
+a ; Predecesseur(a) = s
+b ; Predecesseur(b) = s
+c ; Predecesseur(c) = d
+d ; Predecesseur(d) = a
+e ; Predecesseur(e) = b
+t ; Predecesseur(t) = d
+
+Detection d une chaine ameliorante : s -> a -> d -> t de flot 30.
+Modifications sur le graphe residuel :
+     s    a    b    c    d    e    t
+s    0    0  150    0    0    0    0
+a  150    0    0    0   70    0    0
+b    0    0    0    0  100  120    0
+c    0  120    0    0    0    0   30
+d    0   30    0   50    0    0   50
+e    0    0    0    0   50    0  150
+t    0    0    0  120   30    0    0
+
+
+Iteration 3 :
+Le parcours en largeur :
+a ; Predecesseur(a) = d
+b ; Predecesseur(b) = s
+c ; Predecesseur(c) = d
+d ; Predecesseur(d) = b
+e ; Predecesseur(e) = b
+t ; Predecesseur(t) = d
+
+Detection d une chaine ameliorante : s -> b -> d -> t de flot 50.
+Modifications sur le graphe residuel :
+     s    a    b    c   d    e    t
+s    0    0  100    0   0    0    0
+a  150    0    0    0  70    0    0
+b   50    0    0    0  50  120    0
+c    0  120    0    0   0    0   30
+d    0   30   50   50   0    0    0
+e    0    0    0    0  50    0  150
+t    0    0    0  120  80    0    0
+
+
+Iteration 4 :
+Le parcours en largeur :
+a ; Predecesseur(a) = d
+b ; Predecesseur(b) = s
+c ; Predecesseur(c) = d
+d ; Predecesseur(d) = b
+e ; Predecesseur(e) = b
+t ; Predecesseur(t) = e
+
+Detection d une chaine ameliorante : s -> b -> e -> t de flot 100.
+Modifications sur le graphe residuel :
+     s    a    b    c   d    e   t
+s    0    0    0    0   0    0   0
+a  150    0    0    0  70    0   0
+b  150    0    0    0  50   20   0
+c    0  120    0    0   0    0  30
+d    0   30   50   50   0    0   0
+e    0    0  100    0  50    0  50
+t    0    0    0  120  80  100   0
+
+Matrice des flots (finale) :
+   s        a        b        c       d        e        t
+s  0  150/150  150/150        0       0        0        0
+a  0        0        0  120/120  30/100        0        0
+b  0        0        0        0  50/100  100/120        0
+c  0        0        0        0       0        0  120/150
+d  0        0        0     0/50       0        0    80/80
+e  0        0        0        0    0/50        0  100/150
+t  0        0        0        0       0        0        0
+
+
+Valeur du flot max = 300
+

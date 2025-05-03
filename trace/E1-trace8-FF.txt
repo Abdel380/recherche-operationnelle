@@ -1,0 +1,89 @@
+
+Nombre de sommets : 7
+Matrice :
+   s   a   b   c   d   e   t
+s  0  31  25  27   0   0   0
+a  0   0  20   0  12   0   0
+b  0   0   0   0   6   0   0
+c  0   0  30   0   0  35   0
+d  0   0   0   0   0   0  30
+e  0   0  11   0  10   0  40
+t  0   0   0   0   0   0   0
+
+Le graphe residuel initial est le graphe de départ.
+
+Iteration 1 :
+Le parcours en largeur :
+a ; Predecesseur(a) = s
+b ; Predecesseur(b) = s
+c ; Predecesseur(c) = s
+d ; Predecesseur(d) = a
+e ; Predecesseur(e) = c
+t ; Predecesseur(t) = d
+
+Detection d une chaine ameliorante : s -> a -> d -> t de flot 12.
+Modifications sur le graphe residuel :
+    s   a   b   c   d   e   t
+s   0  19  25  27   0   0   0
+a  12   0  20   0   0   0   0
+b   0   0   0   0   6   0   0
+c   0   0  30   0   0  35   0
+d   0  12   0   0   0   0  18
+e   0   0  11   0  10   0  40
+t   0   0   0   0  12   0   0
+
+
+Iteration 2 :
+Le parcours en largeur :
+a ; Predecesseur(a) = s
+b ; Predecesseur(b) = s
+c ; Predecesseur(c) = s
+d ; Predecesseur(d) = b
+e ; Predecesseur(e) = c
+t ; Predecesseur(t) = d
+
+Detection d une chaine ameliorante : s -> b -> d -> t de flot 6.
+Modifications sur le graphe residuel :
+    s   a   b   c   d   e   t
+s   0  19  19  27   0   0   0
+a  12   0  20   0   0   0   0
+b   6   0   0   0   0   0   0
+c   0   0  30   0   0  35   0
+d   0  12   6   0   0   0  12
+e   0   0  11   0  10   0  40
+t   0   0   0   0  18   0   0
+
+
+Iteration 3 :
+Le parcours en largeur :
+a ; Predecesseur(a) = s
+b ; Predecesseur(b) = s
+c ; Predecesseur(c) = s
+d ; Predecesseur(d) = e
+e ; Predecesseur(e) = c
+t ; Predecesseur(t) = e
+
+Detection d une chaine ameliorante : s -> c -> e -> t de flot 27.
+Modifications sur le graphe residuel :
+    s   a   b   c   d   e   t
+s   0  19  19   0   0   0   0
+a  12   0  20   0   0   0   0
+b   6   0   0   0   0   0   0
+c  27   0  30   0   0   8   0
+d   0  12   6   0   0   0  12
+e   0   0  11  27  10   0  13
+t   0   0   0   0  18  27   0
+
+Matrice des flots (finale) :
+   s      a     b      c      d      e      t
+s  0  12/31  6/25  27/27      0      0      0
+a  0      0  0/20      0  12/12      0      0
+b  0      0     0      0    6/6      0      0
+c  0      0  0/30      0      0  27/35      0
+d  0      0     0      0      0      0  18/30
+e  0      0  0/11      0   0/10      0  27/40
+t  0      0     0      0      0      0      0
+
+
+Valeur du flot max = 45
+

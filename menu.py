@@ -71,7 +71,7 @@ def analyse_complexite():
         nuage_de_points(y)
 
 def affichage_complexite():
-    print("Voulez-vous afficher la compléxité de l'un des algorithme?(oui/non)")
+    print("Voulez-vous afficher la complexité de l'un des algorithme?(oui/non)")
     afficher_complexite = input(">> ").lower()
     if afficher_complexite != "oui" and afficher_complexite != "non":
         print("Réponse incorrecte. Veuillez répondre par oui ou non.")
@@ -126,6 +126,18 @@ def analyse_flot():
         if algo == "1":
             algorithme = "FF"
         else:
+            algorithme = "PR"
+
+    else:
+        print(
+            f"Veuillez choisir l'algorithme que vous souhaitez utiliser pour examiner la proposition {x}, probleme de flot max\n\t1. Ford-Fulkerson\n\t2. Pousser-reetiqueter\n\t3. Résoudre le problème de flot minimum")
+        algo = input(">> ")
+        while (algo != "1" and algo != "2" and algo != "3"):
+            print("Saisi incorrect, saisissez 1, 2 ou 3")
+            algo = input(">> ")
+        if (algo == "1"):
+            algorithme = "FF"
+        elif (algo == "2"):
             algorithme = "PR"
 
     fichier = "./Propositions/prop-" + x + ".txt"

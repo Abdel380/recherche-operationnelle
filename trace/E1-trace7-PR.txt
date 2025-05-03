@@ -1,0 +1,422 @@
+
+Nombre de sommets : 6
+Matrice :
+   s  a  b  c  d  t
+s  0  5  0  8  5  0
+a  0  0  1  0  0  7
+b  0  0  0  0  0  1
+c  0  3  0  0  0  9
+d  0  0  0  4  0  1
+t  0  0  0  0  0  0
+
+Le graphe residuel initial est le graphe de départ.
+=== Initialisation ===
+Hauteurs initiales : {'s': 6, 'a': 0, 'b': 0, 'c': 0, 'd': 0, 't': 0}
+Excédents initiaux : {'s': 0, 'a': 0, 'b': 0, 'c': 0, 'd': 0, 't': 0}
+Capacités   : [[0, 5, 0, 8, 5, 0], [0, 0, 1, 0, 0, 7], [0, 0, 0, 0, 0, 1], [0, 3, 0, 0, 0, 9], [0, 0, 0, 4, 0, 1], [0, 0, 0, 0, 0, 0]]
+
+Push initial 5 de s-> a
+Push initial 8 de s-> c
+Push initial 5 de s-> d
+Flots après initialisation : [[0, 5, 0, 8, 5, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]]
+Excédents après init       : {'s': -18, 'a': 5, 'b': 0, 'c': 8, 'd': 5, 't': 0}
+==========================
+
+=== Début Push–Relabel ===
+
+--- Itération 1 ---
+Hauteurs : {'s': 6, 'a': 0, 'b': 0, 'c': 0, 'd': 0, 't': 0}
+Excédents: {'s': -18, 'a': 5, 'b': 0, 'c': 8, 'd': 5, 't': 0}
+Flots     : [[0, 5, 0, 8, 5, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]] 
+
+Sommet actif : a (index 1), exc=5, h=0
+
+  -> Tentative push a->s | h[a]=0, exc[a]=5
+    -> Pas de push possible sur cet arc
+
+  -> Tentative push a->a | h[a]=0, exc[a]=5
+    -> Pas de push possible sur cet arc
+
+  -> Tentative push a->b | h[a]=0, exc[a]=5
+    -> Pas de push possible sur cet arc
+
+  -> Tentative push a->c | h[a]=0, exc[a]=5
+    -> Pas de push possible sur cet arc
+
+  -> Tentative push a->d | h[a]=0, exc[a]=5
+    -> Pas de push possible sur cet arc
+
+  -> Tentative push a->t | h[a]=0, exc[a]=5
+    -> Pas de push possible sur cet arc
+
+  <- Relabel a : hauteur 0 -> 1
+
+--- Itération 2 ---
+Hauteurs : {'s': 6, 'a': 1, 'b': 0, 'c': 0, 'd': 0, 't': 0}
+Excédents: {'s': -18, 'a': 5, 'b': 0, 'c': 8, 'd': 5, 't': 0}
+Flots     : [[0, 5, 0, 8, 5, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]] 
+
+Sommet actif : a (index 1), exc=5, h=1
+
+  -> Tentative push a->s | h[a]=1, exc[a]=5
+    -> Pas de push possible sur cet arc
+
+  -> Tentative push a->a | h[a]=1, exc[a]=5
+    -> Pas de push possible sur cet arc
+
+  -> Tentative push a->b | h[a]=1, exc[a]=5
+    -> Push direct de 1 (cf_direct=1)
+    État après push :
+      flots[a][b] = 1
+      exc[a] = 4, exc[b] = 1
+
+--- Itération 3 ---
+Hauteurs : {'s': 6, 'a': 1, 'b': 0, 'c': 0, 'd': 0, 't': 0}
+Excédents: {'s': -18, 'a': 4, 'b': 1, 'c': 8, 'd': 5, 't': 0}
+Flots     : [[0, 5, 0, 8, 5, 0], [0, 0, 1, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]] 
+
+Sommet actif : a (index 1), exc=4, h=1
+
+  -> Tentative push a->s | h[a]=1, exc[a]=4
+    -> Pas de push possible sur cet arc
+
+  -> Tentative push a->a | h[a]=1, exc[a]=4
+    -> Pas de push possible sur cet arc
+
+  -> Tentative push a->b | h[a]=1, exc[a]=4
+    -> Pas de push possible sur cet arc
+
+  -> Tentative push a->c | h[a]=1, exc[a]=4
+    -> Pas de push possible sur cet arc
+
+  -> Tentative push a->d | h[a]=1, exc[a]=4
+    -> Pas de push possible sur cet arc
+
+  -> Tentative push a->t | h[a]=1, exc[a]=4
+    -> Push direct de 4 (cf_direct=7)
+    État après push :
+      flots[a][t] = 4
+      exc[a] = 0, exc[t] = 4
+
+--- Itération 4 ---
+Hauteurs : {'s': 6, 'a': 1, 'b': 0, 'c': 0, 'd': 0, 't': 0}
+Excédents: {'s': -18, 'a': 0, 'b': 1, 'c': 8, 'd': 5, 't': 4}
+Flots     : [[0, 5, 0, 8, 5, 0], [0, 0, 1, 0, 0, 4], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]] 
+
+Sommet actif : b (index 2), exc=1, h=0
+
+  -> Tentative push b->s | h[b]=0, exc[b]=1
+    -> Pas de push possible sur cet arc
+
+  -> Tentative push b->a | h[b]=0, exc[b]=1
+    -> Pas de push possible sur cet arc
+
+  -> Tentative push b->b | h[b]=0, exc[b]=1
+    -> Pas de push possible sur cet arc
+
+  -> Tentative push b->c | h[b]=0, exc[b]=1
+    -> Pas de push possible sur cet arc
+
+  -> Tentative push b->d | h[b]=0, exc[b]=1
+    -> Pas de push possible sur cet arc
+
+  -> Tentative push b->t | h[b]=0, exc[b]=1
+    -> Pas de push possible sur cet arc
+
+  <- Relabel b : hauteur 0 -> 1
+
+--- Itération 5 ---
+Hauteurs : {'s': 6, 'a': 1, 'b': 1, 'c': 0, 'd': 0, 't': 0}
+Excédents: {'s': -18, 'a': 0, 'b': 1, 'c': 8, 'd': 5, 't': 4}
+Flots     : [[0, 5, 0, 8, 5, 0], [0, 0, 1, 0, 0, 4], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]] 
+
+Sommet actif : b (index 2), exc=1, h=1
+
+  -> Tentative push b->s | h[b]=1, exc[b]=1
+    -> Pas de push possible sur cet arc
+
+  -> Tentative push b->a | h[b]=1, exc[b]=1
+    -> Pas de push possible sur cet arc
+
+  -> Tentative push b->b | h[b]=1, exc[b]=1
+    -> Pas de push possible sur cet arc
+
+  -> Tentative push b->c | h[b]=1, exc[b]=1
+    -> Pas de push possible sur cet arc
+
+  -> Tentative push b->d | h[b]=1, exc[b]=1
+    -> Pas de push possible sur cet arc
+
+  -> Tentative push b->t | h[b]=1, exc[b]=1
+    -> Push direct de 1 (cf_direct=1)
+    État après push :
+      flots[b][t] = 1
+      exc[b] = 0, exc[t] = 5
+
+--- Itération 6 ---
+Hauteurs : {'s': 6, 'a': 1, 'b': 1, 'c': 0, 'd': 0, 't': 0}
+Excédents: {'s': -18, 'a': 0, 'b': 0, 'c': 8, 'd': 5, 't': 5}
+Flots     : [[0, 5, 0, 8, 5, 0], [0, 0, 1, 0, 0, 4], [0, 0, 0, 0, 0, 1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]] 
+
+Sommet actif : c (index 3), exc=8, h=0
+
+  -> Tentative push c->s | h[c]=0, exc[c]=8
+    -> Pas de push possible sur cet arc
+
+  -> Tentative push c->a | h[c]=0, exc[c]=8
+    -> Pas de push possible sur cet arc
+
+  -> Tentative push c->b | h[c]=0, exc[c]=8
+    -> Pas de push possible sur cet arc
+
+  -> Tentative push c->c | h[c]=0, exc[c]=8
+    -> Pas de push possible sur cet arc
+
+  -> Tentative push c->d | h[c]=0, exc[c]=8
+    -> Pas de push possible sur cet arc
+
+  -> Tentative push c->t | h[c]=0, exc[c]=8
+    -> Pas de push possible sur cet arc
+
+  <- Relabel c : hauteur 0 -> 1
+
+--- Itération 7 ---
+Hauteurs : {'s': 6, 'a': 1, 'b': 1, 'c': 1, 'd': 0, 't': 0}
+Excédents: {'s': -18, 'a': 0, 'b': 0, 'c': 8, 'd': 5, 't': 5}
+Flots     : [[0, 5, 0, 8, 5, 0], [0, 0, 1, 0, 0, 4], [0, 0, 0, 0, 0, 1], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]] 
+
+Sommet actif : c (index 3), exc=8, h=1
+
+  -> Tentative push c->s | h[c]=1, exc[c]=8
+    -> Pas de push possible sur cet arc
+
+  -> Tentative push c->a | h[c]=1, exc[c]=8
+    -> Pas de push possible sur cet arc
+
+  -> Tentative push c->b | h[c]=1, exc[c]=8
+    -> Pas de push possible sur cet arc
+
+  -> Tentative push c->c | h[c]=1, exc[c]=8
+    -> Pas de push possible sur cet arc
+
+  -> Tentative push c->d | h[c]=1, exc[c]=8
+    -> Pas de push possible sur cet arc
+
+  -> Tentative push c->t | h[c]=1, exc[c]=8
+    -> Push direct de 8 (cf_direct=9)
+    État après push :
+      flots[c][t] = 8
+      exc[c] = 0, exc[t] = 13
+
+--- Itération 8 ---
+Hauteurs : {'s': 6, 'a': 1, 'b': 1, 'c': 1, 'd': 0, 't': 0}
+Excédents: {'s': -18, 'a': 0, 'b': 0, 'c': 0, 'd': 5, 't': 13}
+Flots     : [[0, 5, 0, 8, 5, 0], [0, 0, 1, 0, 0, 4], [0, 0, 0, 0, 0, 1], [0, 0, 0, 0, 0, 8], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]] 
+
+Sommet actif : d (index 4), exc=5, h=0
+
+  -> Tentative push d->s | h[d]=0, exc[d]=5
+    -> Pas de push possible sur cet arc
+
+  -> Tentative push d->a | h[d]=0, exc[d]=5
+    -> Pas de push possible sur cet arc
+
+  -> Tentative push d->b | h[d]=0, exc[d]=5
+    -> Pas de push possible sur cet arc
+
+  -> Tentative push d->c | h[d]=0, exc[d]=5
+    -> Pas de push possible sur cet arc
+
+  -> Tentative push d->d | h[d]=0, exc[d]=5
+    -> Pas de push possible sur cet arc
+
+  -> Tentative push d->t | h[d]=0, exc[d]=5
+    -> Pas de push possible sur cet arc
+
+  <- Relabel d : hauteur 0 -> 1
+
+--- Itération 9 ---
+Hauteurs : {'s': 6, 'a': 1, 'b': 1, 'c': 1, 'd': 1, 't': 0}
+Excédents: {'s': -18, 'a': 0, 'b': 0, 'c': 0, 'd': 5, 't': 13}
+Flots     : [[0, 5, 0, 8, 5, 0], [0, 0, 1, 0, 0, 4], [0, 0, 0, 0, 0, 1], [0, 0, 0, 0, 0, 8], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]] 
+
+Sommet actif : d (index 4), exc=5, h=1
+
+  -> Tentative push d->s | h[d]=1, exc[d]=5
+    -> Pas de push possible sur cet arc
+
+  -> Tentative push d->a | h[d]=1, exc[d]=5
+    -> Pas de push possible sur cet arc
+
+  -> Tentative push d->b | h[d]=1, exc[d]=5
+    -> Pas de push possible sur cet arc
+
+  -> Tentative push d->c | h[d]=1, exc[d]=5
+    -> Pas de push possible sur cet arc
+
+  -> Tentative push d->d | h[d]=1, exc[d]=5
+    -> Pas de push possible sur cet arc
+
+  -> Tentative push d->t | h[d]=1, exc[d]=5
+    -> Push direct de 1 (cf_direct=1)
+    État après push :
+      flots[d][t] = 1
+      exc[d] = 4, exc[t] = 14
+
+--- Itération 10 ---
+Hauteurs : {'s': 6, 'a': 1, 'b': 1, 'c': 1, 'd': 1, 't': 0}
+Excédents: {'s': -18, 'a': 0, 'b': 0, 'c': 0, 'd': 4, 't': 14}
+Flots     : [[0, 5, 0, 8, 5, 0], [0, 0, 1, 0, 0, 4], [0, 0, 0, 0, 0, 1], [0, 0, 0, 0, 0, 8], [0, 0, 0, 0, 0, 1], [0, 0, 0, 0, 0, 0]] 
+
+Sommet actif : d (index 4), exc=4, h=1
+
+  -> Tentative push d->s | h[d]=1, exc[d]=4
+    -> Pas de push possible sur cet arc
+
+  -> Tentative push d->a | h[d]=1, exc[d]=4
+    -> Pas de push possible sur cet arc
+
+  -> Tentative push d->b | h[d]=1, exc[d]=4
+    -> Pas de push possible sur cet arc
+
+  -> Tentative push d->c | h[d]=1, exc[d]=4
+    -> Pas de push possible sur cet arc
+
+  -> Tentative push d->d | h[d]=1, exc[d]=4
+    -> Pas de push possible sur cet arc
+
+  -> Tentative push d->t | h[d]=1, exc[d]=4
+    -> Pas de push possible sur cet arc
+
+  <- Relabel d : hauteur 1 -> 2
+
+--- Itération 11 ---
+Hauteurs : {'s': 6, 'a': 1, 'b': 1, 'c': 1, 'd': 2, 't': 0}
+Excédents: {'s': -18, 'a': 0, 'b': 0, 'c': 0, 'd': 4, 't': 14}
+Flots     : [[0, 5, 0, 8, 5, 0], [0, 0, 1, 0, 0, 4], [0, 0, 0, 0, 0, 1], [0, 0, 0, 0, 0, 8], [0, 0, 0, 0, 0, 1], [0, 0, 0, 0, 0, 0]] 
+
+Sommet actif : d (index 4), exc=4, h=2
+
+  -> Tentative push d->s | h[d]=2, exc[d]=4
+    -> Pas de push possible sur cet arc
+
+  -> Tentative push d->a | h[d]=2, exc[d]=4
+    -> Pas de push possible sur cet arc
+
+  -> Tentative push d->b | h[d]=2, exc[d]=4
+    -> Pas de push possible sur cet arc
+
+  -> Tentative push d->c | h[d]=2, exc[d]=4
+    -> Push direct de 4 (cf_direct=4)
+    État après push :
+      flots[d][c] = 4
+      exc[d] = 0, exc[c] = 4
+
+--- Itération 12 ---
+Hauteurs : {'s': 6, 'a': 1, 'b': 1, 'c': 1, 'd': 2, 't': 0}
+Excédents: {'s': -18, 'a': 0, 'b': 0, 'c': 4, 'd': 0, 't': 14}
+Flots     : [[0, 5, 0, 8, 5, 0], [0, 0, 1, 0, 0, 4], [0, 0, 0, 0, 0, 1], [0, 0, 0, 0, 0, 8], [0, 0, 0, 4, 0, 1], [0, 0, 0, 0, 0, 0]] 
+
+Sommet actif : c (index 3), exc=4, h=1
+
+  -> Tentative push c->s | h[c]=1, exc[c]=4
+    -> Pas de push possible sur cet arc
+
+  -> Tentative push c->a | h[c]=1, exc[c]=4
+    -> Pas de push possible sur cet arc
+
+  -> Tentative push c->b | h[c]=1, exc[c]=4
+    -> Pas de push possible sur cet arc
+
+  -> Tentative push c->c | h[c]=1, exc[c]=4
+    -> Pas de push possible sur cet arc
+
+  -> Tentative push c->d | h[c]=1, exc[c]=4
+    -> Pas de push possible sur cet arc
+
+  -> Tentative push c->t | h[c]=1, exc[c]=4
+    -> Push direct de 1 (cf_direct=1)
+    État après push :
+      flots[c][t] = 9
+      exc[c] = 3, exc[t] = 15
+
+--- Itération 13 ---
+Hauteurs : {'s': 6, 'a': 1, 'b': 1, 'c': 1, 'd': 2, 't': 0}
+Excédents: {'s': -18, 'a': 0, 'b': 0, 'c': 3, 'd': 0, 't': 15}
+Flots     : [[0, 5, 0, 8, 5, 0], [0, 0, 1, 0, 0, 4], [0, 0, 0, 0, 0, 1], [0, 0, 0, 0, 0, 9], [0, 0, 0, 4, 0, 1], [0, 0, 0, 0, 0, 0]] 
+
+Sommet actif : c (index 3), exc=3, h=1
+
+  -> Tentative push c->s | h[c]=1, exc[c]=3
+    -> Pas de push possible sur cet arc
+
+  -> Tentative push c->a | h[c]=1, exc[c]=3
+    -> Pas de push possible sur cet arc
+
+  -> Tentative push c->b | h[c]=1, exc[c]=3
+    -> Pas de push possible sur cet arc
+
+  -> Tentative push c->c | h[c]=1, exc[c]=3
+    -> Pas de push possible sur cet arc
+
+  -> Tentative push c->d | h[c]=1, exc[c]=3
+    -> Pas de push possible sur cet arc
+
+  -> Tentative push c->t | h[c]=1, exc[c]=3
+    -> Pas de push possible sur cet arc
+
+  <- Relabel c : hauteur 1 -> 2
+
+--- Itération 14 ---
+Hauteurs : {'s': 6, 'a': 1, 'b': 1, 'c': 2, 'd': 2, 't': 0}
+Excédents: {'s': -18, 'a': 0, 'b': 0, 'c': 3, 'd': 0, 't': 15}
+Flots     : [[0, 5, 0, 8, 5, 0], [0, 0, 1, 0, 0, 4], [0, 0, 0, 0, 0, 1], [0, 0, 0, 0, 0, 9], [0, 0, 0, 4, 0, 1], [0, 0, 0, 0, 0, 0]] 
+
+Sommet actif : c (index 3), exc=3, h=2
+
+  -> Tentative push c->s | h[c]=2, exc[c]=3
+    -> Pas de push possible sur cet arc
+
+  -> Tentative push c->a | h[c]=2, exc[c]=3
+    -> Push direct de 3 (cf_direct=3)
+    État après push :
+      flots[c][a] = 3
+      exc[c] = 0, exc[a] = 3
+
+--- Itération 15 ---
+Hauteurs : {'s': 6, 'a': 1, 'b': 1, 'c': 2, 'd': 2, 't': 0}
+Excédents: {'s': -18, 'a': 3, 'b': 0, 'c': 0, 'd': 0, 't': 15}
+Flots     : [[0, 5, 0, 8, 5, 0], [0, 0, 1, 0, 0, 4], [0, 0, 0, 0, 0, 1], [0, 3, 0, 0, 0, 9], [0, 0, 0, 4, 0, 1], [0, 0, 0, 0, 0, 0]] 
+
+Sommet actif : a (index 1), exc=3, h=1
+
+  -> Tentative push a->s | h[a]=1, exc[a]=3
+    -> Pas de push possible sur cet arc
+
+  -> Tentative push a->a | h[a]=1, exc[a]=3
+    -> Pas de push possible sur cet arc
+
+  -> Tentative push a->b | h[a]=1, exc[a]=3
+    -> Pas de push possible sur cet arc
+
+  -> Tentative push a->c | h[a]=1, exc[a]=3
+    -> Pas de push possible sur cet arc
+
+  -> Tentative push a->d | h[a]=1, exc[a]=3
+    -> Pas de push possible sur cet arc
+
+  -> Tentative push a->t | h[a]=1, exc[a]=3
+    -> Push direct de 3 (cf_direct=3)
+    État après push :
+      flots[a][t] = 7
+      exc[a] = 0, exc[t] = 18
+
+--- Itération 16 ---
+Hauteurs : {'s': 6, 'a': 1, 'b': 1, 'c': 2, 'd': 2, 't': 0}
+Excédents: {'s': -18, 'a': 0, 'b': 0, 'c': 0, 'd': 0, 't': 18}
+Flots     : [[0, 5, 0, 8, 5, 0], [0, 0, 1, 0, 0, 7], [0, 0, 0, 0, 0, 1], [0, 3, 0, 0, 0, 9], [0, 0, 0, 4, 0, 1], [0, 0, 0, 0, 0, 0]] 
+
+Plus de sommet actif -> on arrête
+
+=== Fin Push–Relabel ===
+Flux maximum trouvé (excédent en t) = 18

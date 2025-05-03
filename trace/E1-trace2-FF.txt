@@ -13,19 +13,19 @@ g  0   0  0  0  0  0  3  0  4  6
 h  0   0  0  0  0  4  0  0  0  8
 t  0   0  0  0  0  0  0  0  0  0
 
-Le graphe residuel initial est le graphe de depart.
+Le graphe residuel initial est le graphe de départ.
 
 Iteration 1 :
 Le parcours en largeur :
-a ; (a) = s
-b ; (b) = s
-c ; (c) = s
-d ; (d) = a
-e ; (e) = a
-f ; (f) = a
-g ; (g) = d
-h ; (h) = c
-t ; (t) = f
+a ; Predecesseur(a) = s
+b ; Predecesseur(b) = s
+c ; Predecesseur(c) = s
+d ; Predecesseur(d) = a
+e ; Predecesseur(e) = a
+f ; Predecesseur(f) = a
+g ; Predecesseur(g) = d
+h ; Predecesseur(h) = c
+t ; Predecesseur(t) = f
 
 Detection d une chaine ameliorante : s -> a -> f -> t de flot 4.
 Modifications sur le graphe residuel :
@@ -44,15 +44,15 @@ t  0   0  0  0  0  0  4  0  0  0
 
 Iteration 2 :
 Le parcours en largeur :
-a ; (a) = s
-b ; (b) = s
-c ; (c) = s
-d ; (d) = a
-e ; (e) = a
-f ; (f) = d
-g ; (g) = d
-h ; (h) = c
-t ; (t) = h
+a ; Predecesseur(a) = s
+b ; Predecesseur(b) = s
+c ; Predecesseur(c) = s
+d ; Predecesseur(d) = a
+e ; Predecesseur(e) = a
+f ; Predecesseur(f) = d
+g ; Predecesseur(g) = d
+h ; Predecesseur(h) = c
+t ; Predecesseur(t) = h
 
 Detection d une chaine ameliorante : s -> c -> h -> t de flot 7.
 Modifications sur le graphe residuel :
@@ -71,14 +71,14 @@ t  0   0  0  0  0  0  4  0  7  0
 
 Iteration 3 :
 Le parcours en largeur :
-a ; (a) = s
-b ; (b) = s
-c ; (c) = s
-d ; (d) = a
-e ; (e) = a
-f ; (f) = d
-g ; (g) = d
-t ; (t) = f
+a ; Predecesseur(a) = s
+b ; Predecesseur(b) = s
+c ; Predecesseur(c) = s
+d ; Predecesseur(d) = a
+e ; Predecesseur(e) = a
+f ; Predecesseur(f) = d
+g ; Predecesseur(g) = d
+t ; Predecesseur(t) = f
 
 Detection d une chaine ameliorante : s -> a -> d -> f -> t de flot 1.
 Modifications sur le graphe residuel :
@@ -97,15 +97,15 @@ t  0   0  0  0  0  0  5  0  7  0
 
 Iteration 4 :
 Le parcours en largeur :
-a ; (a) = s
-b ; (b) = s
-c ; (c) = s
-d ; (d) = a
-e ; (e) = a
-f ; (f) = g
-g ; (g) = d
-h ; (h) = g
-t ; (t) = g
+a ; Predecesseur(a) = s
+b ; Predecesseur(b) = s
+c ; Predecesseur(c) = s
+d ; Predecesseur(d) = a
+e ; Predecesseur(e) = a
+f ; Predecesseur(f) = g
+g ; Predecesseur(g) = d
+h ; Predecesseur(h) = g
+t ; Predecesseur(t) = g
 
 Detection d une chaine ameliorante : s -> a -> d -> g -> t de flot 2.
 Modifications sur le graphe residuel :
@@ -124,15 +124,15 @@ t  0  0  0  0  0  0  5  2  7  0
 
 Iteration 5 :
 Le parcours en largeur :
-a ; (a) = s
-b ; (b) = s
-c ; (c) = s
-d ; (d) = e
-e ; (e) = a
-f ; (f) = g
-g ; (g) = d
-h ; (h) = g
-t ; (t) = g
+a ; Predecesseur(a) = s
+b ; Predecesseur(b) = s
+c ; Predecesseur(c) = s
+d ; Predecesseur(d) = e
+e ; Predecesseur(e) = a
+f ; Predecesseur(f) = g
+g ; Predecesseur(g) = d
+h ; Predecesseur(h) = g
+t ; Predecesseur(t) = g
 
 Detection d une chaine ameliorante : s -> a -> e -> d -> g -> t de flot 3.
 Modifications sur le graphe residuel :
@@ -151,15 +151,15 @@ t   0  0  0  0  0  0  5  5  7  0
 
 Iteration 6 :
 Le parcours en largeur :
-a ; (a) = s
-b ; (b) = s
-c ; (c) = s
-d ; (d) = e
-e ; (e) = b
-f ; (f) = g
-g ; (g) = d
-h ; (h) = g
-t ; (t) = g
+a ; Predecesseur(a) = s
+b ; Predecesseur(b) = s
+c ; Predecesseur(c) = s
+d ; Predecesseur(d) = e
+e ; Predecesseur(e) = b
+f ; Predecesseur(f) = g
+g ; Predecesseur(g) = d
+h ; Predecesseur(h) = g
+t ; Predecesseur(t) = g
 
 Detection d une chaine ameliorante : s -> b -> e -> d -> g -> t de flot 1.
 Modifications sur le graphe residuel :
@@ -178,15 +178,15 @@ t   0  0  0  0  0  0  5  6  7  0
 
 Iteration 7 :
 Le parcours en largeur :
-a ; (a) = s
-b ; (b) = s
-c ; (c) = s
-d ; (d) = e
-e ; (e) = b
-f ; (f) = g
-g ; (g) = d
-h ; (h) = g
-t ; (t) = f
+a ; Predecesseur(a) = s
+b ; Predecesseur(b) = s
+c ; Predecesseur(c) = s
+d ; Predecesseur(d) = e
+e ; Predecesseur(e) = b
+f ; Predecesseur(f) = g
+g ; Predecesseur(g) = d
+h ; Predecesseur(h) = g
+t ; Predecesseur(t) = f
 
 Detection d une chaine ameliorante : s -> b -> e -> d -> g -> f -> t de flot 2.
 Modifications sur le graphe residuel :
