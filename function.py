@@ -1,6 +1,5 @@
 from collections import deque
 import pandas as pd
-from networkx.algorithms.distance_measures import eccentricity
 
 
 def lire_matrice_capacite(fichier):
@@ -143,7 +142,7 @@ def edmonds_karp(n, capacites):
         print("Le parcours en largeur :")
         for i in range(n):
             if parent[i] != -1:
-                print(f"{etiquettes[i]} ; ({etiquettes[i]}) = {etiquettes[parent[i]]}")
+                print(f"{etiquettes[i]} ; Predecesseur({etiquettes[i]}) = {etiquettes[parent[i]]}")
 
         print(f"\nDetection d une chaine ameliorante : {afficher_chaine(chemin, n)} de flot {flot}.")
         afficher_matrice(matrice_residuelle(capacites, flots), "Modifications sur le graphe residuel")
@@ -322,29 +321,58 @@ def cycles_de_poids_negatif(couts, distances):
                 return False
     return True
 
+def afficher_matrice_plus_court_chemin(matrice):
+    print("\n")
+    titre = "Algorithme de Bellman"
+    etiquettes = generer_etiquettes(len(matrice[0]))
+    iteration = [ i for i in range(len(matrice)) ]
+    df = pd.DataFrame(matrice, columns=etiquettes, index=iteration)
+    print(f"{titre} :\n{df}\n")
+    return
+
+def eviter_redondance(matrice):
+    matrice2 = [matrice[0]]
+    for elt in matrice:
+        if elt not in matrice2:
+            matrice2.append(elt)
+    return matrice2
+
+
 def bellman_ford_avec_predecesseurs(couts,capacites, source=0):
     n = len(couts)
     distances = [float('inf')] * n
     predecesseurs = [None] * n
     distances[source] = 0
 
-    for x in range(n - 1):
-        for u in range(n):
-            for v in range(n):
-                if capacites[u][v] != 0 and distances[u] + couts[u][v] < distances[v]:
-                    distances[v] = distances[u] + couts[u][v]
-                    predecesseurs[v] = u
-    print(distances, predecesseurs)
+    # Liste pour stocker la matrice des distances à chaque étape
+    matrice_bellman = [distances.copy()]
+
+
+    for u in range(n):
+        for v in range(n):
+            if capacites[u][v] != 0 and distances[u] + couts[u][v] < distances[v]:
+                distances[v] = distances[u] + couts[u][v]
+                predecesseurs[v] = u
+        # Enregistrer les distances après chaque itération
+        matrice_bellman.append(distances.copy())
+    matrice_bellman = eviter_redondance(matrice_bellman)
+    afficher_matrice_plus_court_chemin(matrice_bellman)
     return distances, predecesseurs
 
 
-def maj_bellman(chemin, couts, capacites, min_capacite):
+def maj_bellman(chemin, couts, capacites, retire):
     for x in range(len(chemin)-1):
-        capacites[chemin[x]][chemin[x+1]] -= min_capacite # OK
-        capacites[chemin[x+1]][chemin[x]] = min_capacite # OK
-        couts[chemin[x+1]][chemin[x]] = - couts[chemin[x]][chemin[x+1]]
+        capacites[chemin[x]][chemin[x+1]] -= retire # OK
+        capacites[chemin[x+1]][chemin[x]] = retire # OK
+        couts[chemin[x+1]][chemin[x]] = 0 - couts[chemin[x]][chemin[x+1]]
+        if(capacites[chemin[x]][chemin[x+1]] == 0):
+            couts[chemin[x]][chemin[x + 1]] = 0
 
-    couts[chemin[-2]][chemin[-1]] = 0
+    print("\nLe graphe residuel pondere associe a cette modification est :")
+    afficher_matrice(capacites, "Matrice de capacite")
+    afficher_matrice(couts, "Matrice des couts")
+    return couts, capacites
+
 
 
 def reconstruire_chemin(predecesseurs, t):
@@ -357,19 +385,23 @@ def reconstruire_chemin(predecesseurs, t):
 
 def afficher_chemin_cout_et_capacite(chemin, couts, capacites):
     etiquettes = generer_etiquettes(len(couts))
-    cout_total = 0
     capacites_sur_chemin = []
+    etiquette_chemin = []
 
-    print("\nChemin le plus court (en cout) de s a t :")
+    print("\nChemin le plus court (en cout) de s vers t :")
     for i in range(len(chemin) - 1):
         u = chemin[i]
         v = chemin[i + 1]
-        cout_total += couts[u][v]
         capacites_sur_chemin.append(capacites[u][v])
         print(f"{etiquettes[u]} -> {etiquettes[v]} (cout: {couts[u][v]}, capacite: {capacites[u][v]})")
-
+        etiquette_chemin.append(etiquettes[u])
+    etiquette_chemin.append("t")
     min_capacite = min(capacites_sur_chemin)
-    maj_bellman(chemin, couts, capacites, min_capacite)
+
+    delimiter = " -> "  # Definir le delimiter
+    join_chemin = delimiter.join(etiquette_chemin)
+    print(f"La premiere chaine ameliorante est donc {join_chemin} de flot {min_capacite}")
+    return min_capacite, chemin
 
 
 
@@ -378,6 +410,7 @@ def flot_a_cout_minimal(couts, capacites, flot_demande,source=0):
     """
     :param capacites:
     :param source:
+    :param flot_demande
     :param couts:
     Resoud le problème de flot a cout minimal en renvoyant le cout du flot et le chemin
     :return:
@@ -385,29 +418,46 @@ def flot_a_cout_minimal(couts, capacites, flot_demande,source=0):
     puit = len(couts) - 1 # Sommet final / noeud de destination
     flot_total = 0
     cout_total = 0
+    cout_minimal = 0
+    equation = "d(f) = "
 
     while flot_total < flot_demande:
-        distances, predecesseurs = bellman_ford_avec_predecesseurs(couts,capacites, source)
+        distances, predecesseurs = bellman_ford_avec_predecesseurs(couts, capacites, source)
         if distances[puit] == float('inf'):
             break  # Plus de chemin ameliorant
 
         chemin = reconstruire_chemin(predecesseurs, puit)
-        capacites_sur_chemin = [capacites[chemin[i]][chemin[i + 1]] for i in range(len(chemin) - 1)]
-        min_capacite = min(capacites_sur_chemin)
+        min_capacite, chemin_changer = afficher_chemin_cout_et_capacite(chemin, couts, capacites)
+        flot_total += min_capacite
 
-        # Limiter a ce qu’il reste a envoyer
-        flot_rest = flot_demande - flot_total
-        flux_envoye = min(min_capacite, flot_rest)
 
-        maj_bellman(chemin, couts, capacites, flux_envoye)
 
-        flot_total += flux_envoye
-        cout_total += distances[puit] * flux_envoye
+        if(flot_total < flot_demande):
+            print(f"Le flot total est {flot_total} < {flot_demande} donc on contiue.")
+            # Calcule du cout du flot minimal
+            for i in range(len(chemin_changer) - 1):
+                u = chemin_changer[i]
+                v = chemin_changer[i + 1]
+                equation = equation + f"+  {couts[u][v]} x {min_capacite} "
+                cout_minimal += couts[u][v] * min_capacite
+            couts, capacites = maj_bellman(chemin_changer, couts, capacites, min_capacite)
 
-        afficher_chemin_cout_et_capacite(chemin, couts, capacites)
-        print(f"\n>> Flot achemine : {flot_total} / {flot_demande}")
-        print(f">> Cout total minimum : {cout_total}")
+        else:
+            print(f"\n\nLe flot total est {flot_total} > {flot_demande} donc on peut arrter ici.")
+            if not(flot_total == flot_demande):
+                print(f"La chaine ameliorante fait passer un flot de {min_capacite}, mais on ne lancera passer que {flot_demande - flot_total + min_capacite} ")
+                min_capacite = flot_demande - flot_total + min_capacite
+                # Calcule du cout du flot minimal
+                for i in range(len(chemin_changer) - 1):
+                    u = chemin_changer[i]
+                    v = chemin_changer[i + 1]
+                    equation = equation + f"+  {couts[u][v]} x {min_capacite} "
+                    cout_minimal += couts[u][v] * min_capacite
 
+
+
+    print(f"Le cout pour lancer passer un flot de {flot_demande} est de : {cout_minimal}")
+    print(f"{equation} = {cout_minimal}")
 
     return flot_total, cout_total
 

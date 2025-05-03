@@ -47,6 +47,12 @@ def menu():
         with open(fichier_to_write, "w") as logfile:
             sys.stdout = Tee(sys.__stdout__, logfile)
 
+            if (int(x) > 5):
+                print(f"Trace d'execution de la proposition {x} pour résoudre le problème de flot minimal")
+
+            else:
+                print(f"Trace d'execution de la proposition {x} pour résoudre le problème de flot maximal grace a l'algorithme : {algorithme}")
+
             # Extraction de la matrice
             n, capacites = lire_matrice_capacite(fichier)
 
@@ -54,7 +60,7 @@ def menu():
             print("\nNombre de sommets : " + str(n))
             afficher_matrice(capacites)
 
-            print("Le graphe residuel initial est le graphe de depart.")
+            print("Le graphe residuel initial est le graphe de depart.\n\n")
 
 
             # Si problème de flot max :
@@ -68,8 +74,10 @@ def menu():
             else:
                 n, capacites, couts = lire_matrice_capacite_et_cout(fichier)
 
-                print("Veuillez choisir la valeur de flot que vous souhaitez envoyer ")
-                valeur_flot = input(">> ")
+                print("Veuillez choisir la valeur de flot que vous souhaitez envoyer \n>> ", end=" ")
+                valeur_flot = input("")
+                print(valeur_flot)
+                print(f"\nL'objectif est de trouver un flot de valeur {valeur_flot}, de coût minimal. ")
                 flot_total, cout_total = flot_a_cout_minimal(couts, capacites, int(valeur_flot))
 
             # Fin de l'écriture dans un txt

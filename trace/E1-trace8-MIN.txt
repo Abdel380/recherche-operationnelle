@@ -1,3 +1,4 @@
+Trace d'execution de la proposition 8 pour résoudre le problème de flot minimal
 
 Nombre de sommets : 7
 Matrice :
@@ -11,31 +12,71 @@ e  0   0  11   0  10   0  40
 t  0   0   0   0   0   0   0
 
 Le graphe residuel initial est le graphe de depart.
+
+
 Veuillez choisir la valeur de flot que vous souhaitez envoyer 
->> [0, 8, 4, 15, 7, 35, 29] [None, 0, 0, 0, 2, 3, 4]
+>>  10
 
-Chemin le plus court (en cout) de s a t :
-s -> b (cout: 4, capacite: 19)
-b -> d (cout: 3, capacite: 0)
-d -> t (cout: 0, capacite: 24)
-Cout total du chemin : 0
-Flot maximal : 0
-[0, 8, 4, 15, 24, 35, 24] [None, 0, 0, 0, 1, 3, 4]
+L'objectif est de trouver un flot de valeur 10, de coût minimal. 
 
-Chemin le plus court (en cout) de s a t :
-s -> a (cout: 8, capacite: 19)
-a -> d (cout: 16, capacite: 0)
-d -> t (cout: 0, capacite: 12)
-Cout total du chemin : 0
-Flot maximal : 0
-[0, 8, 4, 15, 50, 35, 50] [None, 0, 0, 0, 5, 3, 5]
 
-Chemin le plus court (en cout) de s a t :
-s -> c (cout: 15, capacite: 20)
-c -> e (cout: 20, capacite: 28)
-e -> t (cout: 0, capacite: 33)
-Cout total du chemin : 700
-Flot maximal : 20
+Algorithme de Bellman :
+   s    a    b     c     d     e     t
+0  0  inf  inf   inf   inf   inf   inf
+1  0  8.0  4.0  15.0   inf   inf   inf
+2  0  8.0  4.0  15.0  24.0   inf   inf
+3  0  8.0  4.0  15.0   7.0   inf   inf
+4  0  8.0  4.0  15.0   7.0  35.0   inf
+5  0  8.0  4.0  15.0   7.0  35.0  29.0
 
->> Flot achemine : 25 / 25
->> Cout total minimum : 812
+
+Chemin le plus court (en cout) de s vers t :
+s -> b (cout: 4, capacite: 25)
+b -> d (cout: 3, capacite: 6)
+d -> t (cout: 22, capacite: 30)
+La premiere chaine ameliorante est donc s -> b -> d -> t de flot 6
+Le flot total est 6 < 10 donc on contiue.
+
+Le graphe residuel pondere associe a cette modification est :
+Matrice de capacite :
+   s   a   b   c   d   e   t
+s  0  31  19  27   0   0   0
+a  0   0  20   0  12   0   0
+b  6   0   0   0   0   0   0
+c  0   0  30   0   0  35   0
+d  0   0   6   0   0   0  24
+e  0   0  11   0  10   0  40
+t  0   0   0   0   6   0   0
+
+Matrice des couts :
+   s  a  b   c   d   e   t
+s  0  8  4  15   0   0   0
+a  0  0  7   0  16   0   0
+b -4  0  0   0   0   0   0
+c  0  0  8   0   0  20   0
+d  0  0 -3   0   0   0  22
+e  0  0  0   0  15   0  15
+t  0  0  0   0 -22   0   0
+
+
+
+Algorithme de Bellman :
+   s    a    b     c     d     e     t
+0  0  inf  inf   inf   inf   inf   inf
+1  0  8.0  4.0  15.0   inf   inf   inf
+2  0  8.0  4.0  15.0  24.0   inf   inf
+3  0  8.0  4.0  15.0  24.0  35.0   inf
+4  0  8.0  4.0  15.0  24.0  35.0  46.0
+
+
+Chemin le plus court (en cout) de s vers t :
+s -> a (cout: 8, capacite: 31)
+a -> d (cout: 16, capacite: 12)
+d -> t (cout: 22, capacite: 24)
+La premiere chaine ameliorante est donc s -> a -> d -> t de flot 12
+
+
+Le flot total est 18 > 10 donc on peut arrter ici.
+La chaine ameliorante fait passer un flot de 12, mais on ne lancera passer que 4 
+Le cout pour lancer passer un flot de 10 est de : 358
+d(f) = +  4 x 6 +  3 x 6 +  22 x 6 +  8 x 4 +  16 x 4 +  22 x 4  = 358
