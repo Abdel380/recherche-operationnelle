@@ -2,6 +2,7 @@ import csv
 import math
 import time
 import matplotlib.pyplot as plt
+from menu import fichier_valide
 import numpy as np
 from collections import defaultdict
 
@@ -40,24 +41,45 @@ def temps_execution(n):
     return temps_fin_FF,temps_fin_PR,temps_fin_FM
 
 
+import os
+import csv
+
 def nuage_de_points(n):
     matrice_temps = [[],[],[]]
 
-    for i in range(1,101):
-        temps_fin_FF,temps_fin_PR,temps_fin_FM = temps_execution(n)
-        matrice_temps[0].append((n,i,temps_fin_FF))
-        matrice_temps[1].append((n,i,temps_fin_PR))
-        matrice_temps[2].append((n,i,temps_fin_FM))
+    for i in range(1, 101):
+        temps_fin_FF, temps_fin_PR, temps_fin_FM = temps_execution(n)
+        matrice_temps[0].append((n, i, temps_fin_FF))
+        matrice_temps[1].append((n, i, temps_fin_PR))
+        matrice_temps[2].append((n, i, temps_fin_FM))
 
-    with open("./temps_execution/temps_execution_FF.csv","a",newline="") as f:
-        writer = csv.writer(f,delimiter=',')
+    if not os.path.exists("./temps_execution/temps_execution_FF.csv") or os.stat("./temps_execution/temps_execution_FF.csv").st_size == 0:
+        with open("./temps_execution/temps_execution_FF.csv", "w", newline="", encoding="utf-8") as f:
+            writer = csv.writer(f, delimiter=',')
+            writer.writerow(["n", "iteration", "temps_execution"])
+
+    with open("./temps_execution/temps_execution_FF.csv", "a", newline="", encoding="utf-8") as f:
+        writer = csv.writer(f, delimiter=',')
         writer.writerows(matrice_temps[0])
-    with open("./temps_execution/temps_execution_PR.csv","a",newline="") as f:
-        writer = csv.writer(f,delimiter=',')
+
+    if not os.path.exists("./temps_execution/temps_execution_PR.csv") or os.stat("./temps_execution/temps_execution_PR.csv").st_size == 0:
+        with open("./temps_execution/temps_execution_PR.csv", "w", newline="", encoding="utf-8") as f:
+            writer = csv.writer(f, delimiter=',')
+            writer.writerow(["n", "iteration", "temps_execution"])
+
+    with open("./temps_execution/temps_execution_PR.csv", "a", newline="", encoding="utf-8") as f:
+        writer = csv.writer(f, delimiter=',')
         writer.writerows(matrice_temps[1])
-    with open("./temps_execution/temps_execution_FM.csv","a",newline="") as f:
-        writer = csv.writer(f,delimiter=',')
+
+    if not os.path.exists("./temps_execution/temps_execution_FM.csv") or os.stat("./temps_execution/temps_execution_FM.csv").st_size == 0:
+        with open("./temps_execution/temps_execution_FM.csv", "w", newline="", encoding="utf-8") as f:
+            writer = csv.writer(f, delimiter=',')
+            writer.writerow(["n", "iteration", "temps_execution"])
+
+    with open("./temps_execution/temps_execution_FM.csv", "a", newline="", encoding="utf-8") as f:
+        writer = csv.writer(f, delimiter=',')
         writer.writerows(matrice_temps[2])
+
 
 def plot_algorithm(csv_path, label):
     # 1. Préparation de deux listes vides :
@@ -101,7 +123,71 @@ def plot_algorithm(csv_path, label):
     plt.show()
 
 
+def compare_complexite(csv_ff, csv_pr):
+    if not fichier_valide(csv_ff):
+        print(f"Le fichier {csv_ff} n'est pas valide.")
+        return None, None
 
+    if not fichier_valide(csv_pr):
+        print(f"Le fichier {csv_pr} n'est pas valide.")
+        return None, None
+
+    # Lecture des fichiers CSV
+    df_ff = pd.read_csv(csv_ff)
+    df_pr = pd.read_csv(csv_pr)
+
+    # Récupération des temps d'exécution
+    # Pour Ford-Fulkerson
+    ff_times = df_ff.groupby('n')["temps_execution"].apply(list).reset_index(name='temps_ff')
+    # Pour Pousser-reetiqueter
+    pr_times = df_pr.groupby('n')["temps_execution"].apply(list).reset_index(name='temps_pr')
+
+    comparaison = pd.merge(ff_times, pr_times, on="n")
+
+    # Traçage de tous les temps d'exécution
+    plt.figure(figsize=(9, 5))
+    for i in range(len(comparaison)):
+        plt.plot([comparaison["n"][i]] * len(comparaison["temps_ff"][i]), comparaison["temps_ff"][i], 'bo',
+                 label="Ford-Fulkerson" if i == 0 else "")
+        plt.plot([comparaison["n"][i]] * len(comparaison["temps_pr"][i]), comparaison["temps_pr"][i], 'ro',
+                 label="Pousser-reetiqueter" if i == 0 else "")
+
+    plt.title("Temps d'exécution des algorithmes pour chaque n")
+    plt.xlabel("Nombre de sommets n")
+    plt.ylabel("Temps d'exécution (s)")
+    plt.grid(True)
+    plt.legend()
+    plt.tight_layout()
+    plt.show()
+
+    # Récupération des valeurs maximales
+    ff_max = df_ff.groupby('n')["temps_execution"].max().reset_index(name="temps_execution_ff")
+    pr_max = df_pr.groupby('n')["temps_execution"].max().reset_index(name="temps_execution_pr")
+
+    # Fusion des résultats maximaux pour les temps d'exécution
+    comparaison_max = pd.merge(ff_max, pr_max, on="n")
+
+    # Traçage du rapport des temps maximaux entre les deux algorithmes
+    comparaison_max["θFF/θPR"] = comparaison_max["temps_execution_ff"] / comparaison_max["temps_execution_pr"]
+
+    plt.figure(figsize=(9, 5))
+    plt.plot(comparaison_max["n"], comparaison_max["θFF/θPR"], color="green", label="θFF/θPR")
+    plt.title("Comparaison des temps maximaux entre FF et PR")
+    plt.xlabel("Nombre de sommets n")
+    plt.ylabel("Rapport θFF/θPR")
+    plt.grid(True)
+    plt.legend()
+    plt.tight_layout()
+    plt.show()
+
+    # Affichage des résultats dans la console
+    print("Comparaison des temps d'exécution pour chaque n :")
+    print(comparaison)
+
+    print("Comparaison des rapports maximaux :")
+    print(comparaison_max)
+
+    return comparaison, comparaison_max
 
 
 def lancer_experience():
