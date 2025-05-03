@@ -438,7 +438,7 @@ def flot_a_cout_minimal(couts, capacites, flot_demande,source=0):
             for i in range(len(chemin_changer) - 1):
                 u = chemin_changer[i]
                 v = chemin_changer[i + 1]
-                equation = equation + f"+  {couts[u][v]} x {min_capacite} "
+                equation = equation + f" {couts[u][v]} x {min_capacite} +"
                 cout_minimal += couts[u][v] * min_capacite
             couts, capacites = maj_bellman(chemin_changer, couts, capacites, min_capacite)
 
@@ -451,13 +451,13 @@ def flot_a_cout_minimal(couts, capacites, flot_demande,source=0):
                 for i in range(len(chemin_changer) - 1):
                     u = chemin_changer[i]
                     v = chemin_changer[i + 1]
-                    equation = equation + f"+  {couts[u][v]} x {min_capacite} "
+                    equation = equation + f" {couts[u][v]} x {min_capacite} +"
                     cout_minimal += couts[u][v] * min_capacite
 
 
 
     print(f"Le cout pour lancer passer un flot de {flot_demande} est de : {cout_minimal}")
-    print(f"{equation} = {cout_minimal}")
+    print(f"{equation[:len(equation) - 1]} = {cout_minimal}")
 
     return flot_total, cout_total
 

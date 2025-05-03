@@ -15,9 +15,9 @@ Le graphe residuel initial est le graphe de depart.
 
 
 Veuillez choisir la valeur de flot que vous souhaitez envoyer 
->>  6
+>>  4
 
-L'objectif est de trouver un flot de valeur 6, de coût minimal. 
+L'objectif est de trouver un flot de valeur 4, de coût minimal. 
 
 
 Algorithme de Bellman :
@@ -37,7 +37,7 @@ d -> t (cout: 3, capacite: 80)
 La premiere chaine ameliorante est donc s -> a -> d -> t de flot 80
 
 
-Le flot total est 80 > 6 donc on peut arrter ici.
-La chaine ameliorante fait passer un flot de 80, mais on ne lancera passer que 6 
-Le cout pour lancer passer un flot de 6 est de : 36
-d(f) = +  2 x 6 +  1 x 6 +  3 x 6  = 36
+Le flot total est 80 > 4 donc on peut arrter ici.
+La chaine ameliorante fait passer un flot de 80, mais on ne lancera passer que 4 
+Le cout pour lancer passer un flot de 4 est de : 24
+d(f) =  2 x 4 + 1 x 4 + 3 x 4  = 24

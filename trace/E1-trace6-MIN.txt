@@ -111,4 +111,4 @@ La premiere chaine ameliorante est donc s -> a -> c -> d -> t de flot 2
 Le flot total est 5 > 4 donc on peut arrter ici.
 La chaine ameliorante fait passer un flot de 2, mais on ne lancera passer que 1 
 Le cout pour lancer passer un flot de 4 est de : 27
-d(f) = +  1 x 2 +  1 x 2 +  1 x 2 +  3 x 1 +  4 x 1 +  3 x 1 +  2 x 1 +  3 x 1 +  6 x 1  = 27
+d(f) =  1 x 2 + 1 x 2 + 1 x 2 + 3 x 1 + 4 x 1 + 3 x 1 + 2 x 1 + 3 x 1 + 6 x 1  = 27
