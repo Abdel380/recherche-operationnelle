@@ -443,21 +443,22 @@ def flot_a_cout_minimal(couts, capacites, flot_demande,source=0):
             couts, capacites = maj_bellman(chemin_changer, couts, capacites, min_capacite)
 
         else:
-            print(f"\n\nLe flot total est {flot_total} > {flot_demande} donc on peut arrter ici.")
+            print(f"\n\nLe flot total est {flot_total} > {flot_demande} donc on peut arreter ici.")
             if not(flot_total == flot_demande):
                 print(f"La chaine ameliorante fait passer un flot de {min_capacite}, mais on ne lancera passer que {flot_demande - flot_total + min_capacite} ")
                 min_capacite = flot_demande - flot_total + min_capacite
                 # Calcule du cout du flot minimal
-                for i in range(len(chemin_changer) - 1):
-                    u = chemin_changer[i]
-                    v = chemin_changer[i + 1]
-                    equation = equation + f" {couts[u][v]} x {min_capacite} +"
-                    cout_minimal += couts[u][v] * min_capacite
+            for i in range(len(chemin_changer) - 1):
+                u = chemin_changer[i]
+                v = chemin_changer[i + 1]
+                equation = equation + f" {couts[u][v]} x {min_capacite} +"
+                cout_minimal += couts[u][v] * min_capacite
 
-
-
-    print(f"Le cout pour lancer passer un flot de {flot_demande} est de : {cout_minimal}")
-    print(f"{equation[:len(equation) - 1]} = {cout_minimal}")
+    if(flot_total < flot_demande):
+        print(f"Il n'est pas possible d'envoyer un flot de {flot_demande}. Au maximum on envoie {flot_total}")
+    else:
+        print(f"Le cout pour lancer passer un flot de {flot_demande} est de : {cout_minimal}")
+        print(f"{equation[:len(equation) - 1]} = {cout_minimal}")
 
     return flot_total, cout_total
 
