@@ -13,7 +13,7 @@ def generer_capacites_couts_aleatoirement(n):
     couts = [[0] * n for _ in range(n)]
 
     nb_val_non_nulles = math.floor((n*n)/2)
-    couples =[(i,j) for i in range(n) for j in range (n) if i!=j]
+    couples =[(i,j) for i in range(n) for j in range (n) if i!=j and i!=n-1 and j!=0 ]
     arrete_retenue = random.sample(couples, nb_val_non_nulles)
     for sommet, succ in arrete_retenue:
         capacites[sommet][succ] += random.randint(1,100)
